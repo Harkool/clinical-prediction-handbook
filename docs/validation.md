@@ -10,7 +10,7 @@
 
 ## R 课程与独立核查
 
-第 1—20 章已经以 quick 与 book 完成实际运行。完整预算包括开发 200 次、条件评价 500 次、校准 200 / 500 次，以及双重 bootstrap 200 × 50。输入保护及状态记录的最终修订已通过 quick 全 20 章及 20 项 R 语义检查；完整预算的最终重跑仍在进行，发行前更新此记录。
+最终代码的第 1—20 章已分别以 quick 与 book 完成实际运行，book 最终重跑耗时约 385 秒。完整预算包括开发 200 次、条件评价 500 次、校准 200 / 500 次，以及双重 bootstrap 200 × 50。输入保护与状态记录通过 quick 全 20 章及 20 项 R 语义检查。
 
 独立 Python 设计矩阵重算原书合成主线的全部 3200 个预测，最大差为 `2.9976021664879227e-15`，C = `0.7712383848248106`，Brier = `0.09069047612869838`，事件数 384。验证对 CSV 系数、输入、预测与 R 表观指标同时检查，并在报告中绑定这些文件的 SHA-256。
 
@@ -28,7 +28,9 @@ python run.py math all --mode quick
 
 新机器上从同一提交重新运行，不搬运开发者缓存。`outputs/` 中的数据、模型、日志和图表只属于该次本地操作，没有纳入仓库。`examples/reference/` 的旧书门禁属于参考产物，不能复制成自己的审阅决定。
 
-GitHub Actions 已配置 Windows、macOS、Linux 的快速流程；具体远端运行状态以 [Actions](https://github.com/Harkool/clinical-prediction-handbook/actions) 为准，本地实跑不能代替尚未完成的远端检查。完整预算的远端任务按需手动触发。
+从公开 GitHub 仓库重新 clone 的代码已独立跑通 20 章快速课程、预测核查和数学第 24b 实验；16 个参考文件字节摘要全部匹配。最终 book 结果的开发 bootstrap、双重 bootstrap、校准曲线、分组、规格、3200 个预测及 19 个系数，与原书参考共同数值字段的最大差异均为 0。
+
+Windows、macOS、Linux 的远端快速流程均已成功，见 [首次三平台运行](https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38072548229)。该流程涵盖 20 章课程、独立预测核查、20 项 R 检查、15 项 Python 测试及全部 16 个快速数学实验。实现提交为 `3f90562a921d4aca46b32709afff84e84568148c`；之后的发行记录提交只更新文档，不改变已测代码。结构化记录见 [release-validation.json](release-validation.json)。完整预算的远端任务按需手动触发，本地完整预算已经执行。
 
 ## 这些检查证明什么
 

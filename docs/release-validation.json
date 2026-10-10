@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-11",
+  "implementation_commit": "3f90562a921d4aca46b32709afff84e84568148c",
+  "R": "4.6.1",
+  "Python": "3.9.20",
+  "r_chapters_quick": 20,
+  "r_chapters_book": 20,
+  "r_semantic_checks": 20,
+  "python_tests": 15,
+  "mathematical_scripts_each_mode": 16,
+  "mathematical_checks_each_mode": 47,
+  "fresh_public_clone": "PASS",
+  "reference_comparison": {
+    "bootstrap_optimism.csv": {
+      "rows": 5,
+      "max_numeric_difference": 0.0
+    },
+    "development_intervals.csv": {
+      "rows": 5,
+      "max_numeric_difference": 0.0
+    },
+    "calibration_curve.csv": {
+      "rows": 80,
+      "max_numeric_difference": 0.0
+    },
+    "calibration_groups.csv": {
+      "rows": 7,
+      "max_numeric_difference": 0.0
+    },
+    "calibration_recipe.csv": {
+      "rows": 12,
+      "max_numeric_difference": 0.0
+    },
+    "predictions.csv": {
+      "rows": 3200,
+      "max_numeric_difference": 0.0
+    },
+    "model_coefficients.csv": {
+      "rows": 19,
+      "max_numeric_difference": 0.0
+    }
+  },
+  "remote_ci": {
+    "run_id": 38072548229,
+    "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38072548229",
+    "ubuntu": "success",
+    "windows": "success",
+    "macos": "success"
+  },
+  "scope": "synthetic educational workflows; human clinical review remains pending"
+}
