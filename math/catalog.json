@@ -1,0 +1,261 @@
+[
+  {
+    "id": "21",
+    "chapter": 21,
+    "title": "Logistic、IRLS、分离与 Firth",
+    "script": "math/ch21.py",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "1fe3ab2665d6c9e4b658f91cd5875cdf65d33ab72b7a366181dc10c395e940c4"
+  },
+  {
+    "id": "22",
+    "chapter": 22,
+    "title": "惩罚、偏差方差与全局收缩",
+    "script": "math/ch22.py",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "b2a865361dde550f9047fae777ef7fad6e7fd3c6f6ee47b126a98870e9db6f9a"
+  },
+  {
+    "id": "22b",
+    "chapter": 22,
+    "title": "坐标下降与惩罚反例",
+    "script": "math/ch22b.py",
+    "dependencies": [
+      "numpy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "d77f0a80c97429f7bd0927eb5795aaf2edef51943175c67e6465c61f8717e4f1"
+  },
+  {
+    "id": "23",
+    "chapter": 23,
+    "title": "限制性立方样条与惩罚零空间",
+    "script": "math/ch23.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "fe150da8380b281d2de1771bd721417341c5179a329ba7e869fbfbd0d1fd7fb8"
+  },
+  {
+    "id": "24",
+    "chapter": 24,
+    "title": "Cox、绝对风险与竞争风险",
+    "script": "math/ch24.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "1e86c576f9aa370e577c123a9a0d281ff7023924275b5c004c4335596299fc99"
+  },
+  {
+    "id": "24b",
+    "chapter": 24,
+    "title": "竞争风险 IPCW、标签与 Fine–Gray",
+    "script": "math/ch24b.py",
+    "dependencies": [
+      "numpy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "cd09732040168360c7ec9355e670364a926c7acf2ce6c272bc6186e90b7339bc"
+  },
+  {
+    "id": "25",
+    "chapter": 25,
+    "title": "树分裂、提升与相关树方差",
+    "script": "math/ch25.py",
+    "dependencies": [
+      "numpy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "4f40f4eeb9251bd28a1f7b211aae502c2a1af54a2dfd5cfa3925580ed4900e8f"
+  },
+  {
+    "id": "25b",
+    "chapter": 25,
+    "title": "随机森林与提升的校准实验",
+    "script": "math/ch25b.py",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "d00f846ed9e309fd13d9e91947ec8644dea36aca47220d8da55490f376b4f5c1"
+  },
+  {
+    "id": "26",
+    "chapter": 26,
+    "title": "神经网络、反向传播与参数量",
+    "script": "math/ch26.py",
+    "dependencies": [
+      "numpy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "cdc6b456fc9b4159ccd2f045daf7b51004705015fc23151ce12360b0111657a9"
+  },
+  {
+    "id": "26b",
+    "chapter": 26,
+    "title": "神经网络正则化的校准实验",
+    "script": "math/ch26b.py",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "83df13c55fa67fc6cf262b3d8cc461d6962cbc792c45547ba81527558a941d64"
+  },
+  {
+    "id": "27",
+    "chapter": 27,
+    "title": "评价指标、校准、Brier 与 NRI",
+    "script": "math/ch27.py",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sklearn"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "5f9e454c8c2db38087a2815805e9d0f6c309eeb7b80e4bc0a1600a4bd018687e"
+  },
+  {
+    "id": "28",
+    "chapter": 28,
+    "title": "重抽样、筛选泄漏与嵌套验证",
+    "script": "math/ch28.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "7eb5ffb1f71a92982339b3dcf40cd57695fa57ec04b0bc26b7edfbfbac37575a"
+  },
+  {
+    "id": "29",
+    "chapter": 29,
+    "title": "缺失机制、MI 与部署相容性",
+    "script": "math/ch29.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "875083f51fb4d87a3e604b2fe361487d2873d0c1123f050c2e2a09192cb2771c"
+  },
+  {
+    "id": "30",
+    "chapter": 30,
+    "title": "开发与外部验证的样本量",
+    "script": "math/ch30.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "3a1252774051b910369ae496399ac16a6e5872888c385960006b511370b49204"
+  },
+  {
+    "id": "31",
+    "chapter": 31,
+    "title": "病例对照、类平衡与反事实",
+    "script": "math/ch31.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "long",
+    "original_sha256": "2245abee240059633cc265daf3da3881df1eb62229272fbad2bc4eb3231d0b7a"
+  },
+  {
+    "id": "31b",
+    "chapter": 31,
+    "title": "条件化与权重目标的确定性反例",
+    "script": "math/ch31b.py",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "expected_artifacts": [
+      "stdout.txt",
+      "result.json"
+    ],
+    "runtime": "short",
+    "original_sha256": "30622c764252b4e9d5490c7514b75106566fd16ea8d40b941834d3bf6643f1ba"
+  }
+]

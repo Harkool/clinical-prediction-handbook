@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "使用本项目时，请引用软件版本，并按所用书籍版本另行引用书籍。"
+type: software
+title: "Clinical Prediction Handbook: 逐章实操项目"
+authors:
+  - family-names: Liu
+    given-names: Hao
+version: 1.0.0
+date-released: 2026-10-11
+url: "https://github.com/Harkool/clinical-prediction-handbook"
+repository-code: "https://github.com/Harkool/clinical-prediction-handbook"
+license: MIT

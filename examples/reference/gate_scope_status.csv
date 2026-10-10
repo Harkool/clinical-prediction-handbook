@@ -1,0 +1,5 @@
+"id","status","scope"
+"G13_TABLE","AUTO_PASS_SCOPED","development-corrected statistic: 200 x 50 empirical percentile range; no external coverage guarantee"
+"G13_CURVE","AUTO_PASS_SCOPED","200 development replicates; smooth corrected curve has no CI; 500 fixed-apparent pointwise ranges"
+"G13_DISTRIBUTION","AUTO_PASS_SCOPED","all 3200 predictions; prespecified bins; event counts and descriptive Wilson ranges"
+"G13_THRESHOLDS","AUTO_PASS_SCOPED","prespecified teaching thresholds; internally corrected net benefit; no approved clinical action"

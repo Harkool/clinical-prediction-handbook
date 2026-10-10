@@ -1,0 +1,6 @@
+local_scope,official_reference,status,evidence
+target_and_data,TRIPOD+AI relevant design/data items,HUMAN_PENDING,protocol/analysis_plan.csv
+performance_and_uncertainty,TRIPOD+AI 23a,GENERATED_WITH_SCOPE_LIMITS,results/bootstrap_optimism.csv and performance_intervals.csv
+limitations,TRIPOD+AI 26,GENERATED_FOR_TEACHING,report/main_case_report.md
+ethics_funding_conflicts_and_access,TRIPOD+AI relevant declarations,HUMAN_PENDING,templates/human_review.csv
+complete_official_checklist,obtain and check the full current official checklist,HUMAN_PENDING,this project map is not the full checklist

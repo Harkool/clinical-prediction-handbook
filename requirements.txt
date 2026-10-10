@@ -1,0 +1,5 @@
+# Mathematical labs: the versions used in the recorded local acceptance run.
+# Python 3.9–3.12. The command-line launcher itself uses the standard library.
+numpy==2.0.2
+scipy==1.13.1
+scikit-learn==1.6.1

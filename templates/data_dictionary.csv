@@ -1,0 +1,27 @@
+variable,type,unit,availability,role
+id,string,none,decision_time,identifier only
+center,integer,1-6,decision_time,descriptive subgroup; not a model input
+age,numeric,years,decision_time,age RCS: 4 knots and 3 parameters
+bmi,numeric,kg/m2,decision_time,1 parameter
+male,binary,0/1,decision_time,1 parameter
+asa,integer,I-IV,decision_time,3 parameters; baseline I
+emergency,binary,0/1,decision_time,1 parameter
+diabetes,binary,0/1,decision_time,1 parameter
+copd,binary,0/1,decision_time,1 parameter
+smoker,binary,0/1,decision_time,1 parameter
+chf,binary,0/1,decision_time,1 parameter
+sbp,numeric,mmHg,decision_time,1 parameter
+hr,numeric,beats/minute,decision_time,1 parameter
+hb,numeric,g/L,result_available_time,1 parameter
+alb,numeric,g/L,result_available_time,1 parameter
+crea,numeric,umol/L,result_available_time,1 log-transformed parameter
+decision_time,numeric,days on a common synthetic scale,pre-induction assessment,prediction anchor
+outcome_origin,numeric,days on a common synthetic scale,actual surgery start,outcome window origin; not an input
+collection_time,numeric,days on a common synthetic scale,before decision_time,example laboratory collection timestamp
+result_available_time,numeric,days on a common synthetic scale,before decision_time,example laboratory report timestamp
+event_time,numeric,days on a common synthetic scale,follow-up,nonfatal CD III/IV event
+death_time,numeric,days on a common synthetic scale,follow-up,CD V death included in main outcome
+last_contact,numeric,days on a common synthetic scale,follow-up,last reliable observation
+cd_grade,integer,0-V,follow-up,outcome components; forbidden predictor
+y,binary,0/1,follow-up,CD>=III target; forbidden predictor
+true_risk,numeric,probability,generator only,answer key; forbidden predictor

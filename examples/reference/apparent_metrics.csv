@@ -1,0 +1,6 @@
+"metric","estimate"
+"C",0.771238384824811
+"Brier",0.0906904761286982
+"calibration_slope",1.00000000000152
+"calibration_intercept",-8.34088612465452e-13
+"OE",0.999999999999245

@@ -1,0 +1,6 @@
+"metric","lower","upper","B_outer","B_inner","mean_inner_optimism_MCSE","method"
+"C",0.735218280502692,0.795024566706939,200,50,0.00181530931212573,"approximate percentile double bootstrap of internal corrected estimate"
+"Brier",0.0852642460738028,0.0985291603323746,200,50,0.000523177443605,"approximate percentile double bootstrap of internal corrected estimate"
+"calibration_slope",0.927711608138395,0.965906565362642,200,50,0.00803714005509796,"approximate percentile double bootstrap of internal corrected estimate"
+"calibration_intercept",-0.0195094273043061,0.0132498239665454,200,50,0.00830839098339553,"approximate percentile double bootstrap of internal corrected estimate"
+"OE",0.986718382018708,1.01141361442334,200,50,0.00623806837147581,"approximate percentile double bootstrap of internal corrected estimate"

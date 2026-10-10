@@ -1,0 +1,39 @@
+name: Reader checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  practice:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+      - run: python -m pip install -r requirements.txt
+      - run: python run.py doctor
+      - run: python run.py course --mode quick
+      - run: python run.py verify --mode quick
+      - run: Rscript --vanilla tests/test_course.R
+      - run: python -m unittest discover -s tests -v
+      - run: python run.py math all --mode quick
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: reader-results-${{ matrix.os }}
+          path: outputs/
+          retention-days: 7

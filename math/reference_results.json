@@ -1,0 +1,1186 @@
+{
+  "run_date": "2026-10-11",
+  "source": "actual execution of all 16 repository mathematical scripts in both modes",
+  "scope": "synthetic educational experiments; no clinical patient data",
+  "note": "ch25 Gaussian mean-distribution simulation consumes a different random stream from the original matrix simulation; quick Monte Carlo estimates are not book-budget estimates",
+  "modes": {
+    "quick": {
+      "environment": {
+        "python": "3.9.20",
+        "numpy": "2.0.2",
+        "scipy": "1.13.1",
+        "sklearn": "1.6.1"
+      },
+      "scripts_executed": 16,
+      "numerical_checks": 47,
+      "results": [
+        {
+          "id": "21",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "irls_equals_2x2_log_or": true,
+            "firth_equals_half_cell_correction": true,
+            "flic_restores_observed_mean": true
+          },
+          "values": {
+            "log_odds_ratio": 1.791759471824021,
+            "flic_mean_risk": 0.020000000000000077
+          }
+        },
+        {
+          "id": "22",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "logistic_repetitions": {
+              "book": 400,
+              "quick": 20,
+              "actual": 20
+            },
+            "logistic_test_n": {
+              "book": 60000,
+              "quick": 8000,
+              "actual": 8000
+            }
+          },
+          "checks": {
+            "ridge_orthogonal_solution": true,
+            "lasso_orthogonal_solution": true
+          },
+          "values": {
+            "ridge_coefficients": [
+              2.0,
+              0.6666666666666666,
+              0.26666666666666666
+            ],
+            "lasso_coefficients": [
+              2.5,
+              0.5,
+              0.0
+            ]
+          }
+        },
+        {
+          "id": "22b",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "linear_repetitions": {
+              "book": 6000,
+              "quick": 300,
+              "actual": 300
+            }
+          },
+          "checks": {
+            "lasso_matches_moment_solution": true,
+            "nonmonotone_support_counterexample": true
+          },
+          "values": {
+            "moment_solution": [
+              0.6875000000000001,
+              0.18749999999999994
+            ],
+            "elastic_net_support_counts": [
+              2,
+              1,
+              2
+            ],
+            "active_kkt_residuals": [
+              8.881784197001252e-16,
+              1.6653345369377348e-16,
+              1.7763568394002505e-15
+            ]
+          }
+        },
+        {
+          "id": "23",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "nonlinearity_repetitions": {
+              "book": 400,
+              "quick": 40,
+              "actual": 40
+            }
+          },
+          "checks": {
+            "rcs_tail_is_linear": true,
+            "penalty_nullspace_is_not_ordinary_x_line": true,
+            "intrinsic_prior_differs_from_pseudoinverse_normal": true
+          },
+          "values": {
+            "nullspace_rss": 23.523843070984583,
+            "ordinary_line_rss": 22.37045289735103
+          }
+        },
+        {
+          "id": "24",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "cox_score_at_solution": true,
+            "full_likelihood_matches_profile": true,
+            "cif_mass_conservation": true,
+            "cause_hr_does_not_order_cif": true
+          },
+          "values": {
+            "cox_beta": 0.7751564503638384,
+            "ipcw_brier_6": 0.24459833937906406
+          }
+        },
+        {
+          "id": "24b",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "correct_target_ranking": true,
+            "wrong_target_reverses_ranking": true,
+            "fine_gray_product_limit_equals_aj": true,
+            "brier_constant_aj_identity": true
+          },
+          "values": {
+            "correct_brier": [
+              0.21638888888888888,
+              0.2633333333333333
+            ],
+            "wrong_brier": [
+              0.2958333333333333,
+              0.24888888888888888
+            ],
+            "fg_aj_max_difference": 9.43689570931383e-16
+          }
+        },
+        {
+          "id": "25",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "oob_repetitions": {
+              "book": 20000,
+              "quick": 2000,
+              "actual": 2000
+            },
+            "correlated_mean_repetitions": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 20000
+            }
+          },
+          "checks": {
+            "boosting_newton_stump_matches_sklearn": true,
+            "step_reduces_log_loss": true,
+            "oob_limit": true
+          },
+          "values": {
+            "stump_threshold": 4.5,
+            "loss_before": 0.6615632381579821,
+            "loss_after": 0.5807764880739529,
+            "variance_demo": "exact Gaussian mean distribution; random stream differs from original matrix simulation"
+          }
+        },
+        {
+          "id": "25b",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "test_n": {
+              "book": 40000,
+              "quick": 5000,
+              "actual": 5000
+            },
+            "development_repetitions": {
+              "book": 20,
+              "quick": 3,
+              "actual": 3
+            },
+            "rf_max_trees": {
+              "book": 300,
+              "quick": 60,
+              "actual": 60
+            }
+          },
+          "checks": {
+            "regularized_objective_decreases": true,
+            "gain_positive": true,
+            "all_development_samples_have_both_classes": true
+          },
+          "values": {
+            "second_order_gain": 1.1612903225806452,
+            "actual_regularized_decrease": 1.1723848485017179,
+            "development_repetitions": 3
+          }
+        },
+        {
+          "id": "26",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "backprop_matches_finite_difference": true,
+            "sgd_reduces_loss": true,
+            "parameter_count_20_64_64_1": true
+          },
+          "values": {
+            "max_gradient_error": 6.80493994487108e-11,
+            "parameters_20_64_64_1": 5569
+          }
+        },
+        {
+          "id": "26b",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "test_n": {
+              "book": 40000,
+              "quick": 5000,
+              "actual": 5000
+            },
+            "development_repetitions": {
+              "book": 20,
+              "quick": 3,
+              "actual": 3
+            }
+          },
+          "checks": {
+            "all_development_samples_have_both_classes": true,
+            "last_grid_slope_finite": true
+          },
+          "values": {
+            "development_repetitions": 3,
+            "last_grid_mean_slope": -5.063766576901966,
+            "last_grid_mean_auc": 0.5677460552448755
+          }
+        },
+        {
+          "id": "27",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "nri_n": {
+              "book": 2000000,
+              "quick": 50000,
+              "actual": 50000
+            },
+            "population_risk_n": {
+              "book": 2000000,
+              "quick": 30000,
+              "actual": 30000
+            },
+            "auc_bootstrap": {
+              "book": 1000,
+              "quick": 100,
+              "actual": 100
+            },
+            "recalibration_n": {
+              "book": 1000000,
+              "quick": 20000,
+              "actual": 20000
+            }
+          },
+          "checks": {
+            "auc_matches_pairwise_probability": true,
+            "delong_fast_matches_brute_force": true,
+            "correction_score_equations": true
+          },
+          "values": {
+            "hand_auc": 0.8333333333333334,
+            "hand_delong_se": 0.14109361221333663,
+            "recalibration_coefficients": [
+              -0.36704454660912206,
+              0.6929814766834116
+            ]
+          }
+        },
+        {
+          "id": "28",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "ols_repetitions": {
+              "book": 2000,
+              "quick": 200,
+              "actual": 200
+            },
+            "ols_development_repetitions": {
+              "book": 600,
+              "quick": 30,
+              "actual": 30
+            },
+            "ols_bootstrap": {
+              "book": 200,
+              "quick": 50,
+              "actual": 50
+            },
+            "noise_repetitions": {
+              "book": 300,
+              "quick": 12,
+              "actual": 12
+            },
+            "noise_bootstrap": {
+              "book": 100,
+              "quick": 20,
+              "actual": 20
+            },
+            "nested_repetitions": {
+              "book": 150,
+              "quick": 8,
+              "actual": 8
+            },
+            "mean_random_bootstrap": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 20000
+            }
+          },
+          "checks": {
+            "enumerated_mean_optimism_equals_formula": true,
+            "cv_covariance_formula_equals_empirical": true,
+            "all_logistic_fits_pass_gradient": true
+          },
+          "values": {
+            "enumerated_mean_optimism": 2.222222222222224,
+            "fit_diagnostics": {
+              "fits": 3184,
+              "max_gradient": 9.881692062044759e-08,
+              "max_iterations": 27,
+              "failures": 0
+            },
+            "inner_best_mean_auc": 0.5790455823112073,
+            "outer_mean_auc": 0.4847475799663299
+          }
+        },
+        {
+          "id": "29",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "mechanism_n": {
+              "book": 400000,
+              "quick": 30000,
+              "actual": 30000
+            },
+            "imputation_n": {
+              "book": 2000,
+              "quick": 1000,
+              "actual": 1000
+            },
+            "imputation_m": {
+              "book": 20,
+              "quick": 5,
+              "actual": 5
+            },
+            "imputation_repetitions": {
+              "book": 300,
+              "quick": 20,
+              "actual": 20
+            },
+            "deployment_train_n": {
+              "book": 5000,
+              "quick": 1000,
+              "actual": 1000
+            },
+            "deployment_test_n": {
+              "book": 50000,
+              "quick": 5000,
+              "actual": 5000
+            },
+            "deployment_repetitions": {
+              "book": 60,
+              "quick": 6,
+              "actual": 6
+            },
+            "pmm_recipient_n": {
+              "book": 4000,
+              "quick": 400,
+              "actual": 400
+            },
+            "pmm_repetitions": {
+              "book": 200,
+              "quick": 10,
+              "actual": 10
+            },
+            "deployment_imputations": {
+              "book": 10,
+              "quick": 5,
+              "actual": 5
+            },
+            "probability_draws": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 20000
+            }
+          },
+          "checks": {
+            "rubin_total_variance_includes_between_component": true,
+            "pmm_uses_observed_positive_donors": true
+          },
+          "values": {
+            "rubin_pooled_estimate": 1.02,
+            "rubin_total_variance": 0.04914000000000001,
+            "rubin_se": 0.22167543842293402
+          }
+        },
+        {
+          "id": "30",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "development_repetitions": {
+              "book": 300,
+              "quick": 10,
+              "actual": 10
+            },
+            "test_n": {
+              "book": 100000,
+              "quick": 5000,
+              "actual": 5000
+            },
+            "se_repetitions": {
+              "book": 600,
+              "quick": 40,
+              "actual": 40
+            },
+            "auc_population_n": {
+              "book": 400000,
+              "quick": 30000,
+              "actual": 30000
+            }
+          },
+          "checks": {
+            "planning_three_criteria_maximum": true,
+            "weaker_model_needs_more_development_data": true,
+            "slope_information_positive": true
+          },
+          "values": {
+            "planning_n": 1182,
+            "planning_r2cs": 0.12716057053974927,
+            "external_slope_n": 4719.942655912463
+          }
+        },
+        {
+          "id": "31",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "case_control_population_n": {
+              "book": 1000000,
+              "quick": 100000,
+              "actual": 100000
+            },
+            "case_control_each_group": {
+              "book": 3000,
+              "quick": 1000,
+              "actual": 1000
+            },
+            "balance_large_train_n": {
+              "book": 40000,
+              "quick": 4000,
+              "actual": 4000
+            },
+            "balance_repetitions": {
+              "book": 300,
+              "quick": 8,
+              "actual": 8
+            },
+            "balance_test_n": {
+              "book": 200000,
+              "quick": 10000,
+              "actual": 10000
+            },
+            "causal_n": {
+              "book": 400000,
+              "quick": 20000,
+              "actual": 20000
+            },
+            "case_control_evaluation_n": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 20000
+            }
+          },
+          "checks": {
+            "weighted_auc_ties_receive_half_credit": true,
+            "ipw_effective_sample_size_le_n": true,
+            "policy_changes_risk": true
+          },
+          "values": {
+            "prior_log_odds_shift": 3.4293726832412004,
+            "ipw_effective_sample_size": 5368.7823035026,
+            "policy_extra_events_per_100": 6.0
+          }
+        },
+        {
+          "id": "31b",
+          "mode": "quick",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "sufficient_adjustment_recovers_true_coefficients": true,
+            "quadrature_stable": true,
+            "ordinary_ipw_targets_population": true,
+            "x_stabilized_weights_change_target": true
+          },
+          "values": {
+            "conditioning": {
+              "quadrature_order": 80,
+              "full_L_logistic_coefficients": [
+                -1.0,
+                0.8,
+                0.8,
+                -1.2
+              ],
+              "X_plus_A_logistic_coefficients": [
+                -1.2524108202443323,
+                0.6378676742575008,
+                -0.41239986616577007
+              ],
+              "intervention_risks_at_X0": [
+                0.292957559560246,
+                0.12202942839436344
+              ],
+              "observed_risks_at_X0": [
+                0.22358674238493315,
+                0.15890104095861846
+              ],
+              "intervention_risk_difference": -0.17092813116588257,
+              "observed_risk_difference": -0.06468570142631469,
+              "ipw_risks_at_X0": [
+                0.292957559560246,
+                0.12202942839436344
+              ]
+            },
+            "stabilization": {
+              "stratum_mass": [
+                0.5,
+                0.5
+              ],
+              "untreated_probability": [
+                0.9,
+                0.1
+              ],
+              "risk_under_no_treatment": [
+                0.1,
+                0.4
+              ],
+              "prediction": 0.25,
+              "target_brier": 0.1875,
+              "ordinary_ipw_brier": 0.1875,
+              "X_stabilized_normalized_brier": 0.1275,
+              "constant_stabilized_normalized_brier": 0.1875
+            },
+            "quadrature_60_vs_80_max_change": 3.885780586188048e-16
+          }
+        }
+      ]
+    },
+    "book": {
+      "environment": {
+        "python": "3.9.20",
+        "numpy": "2.0.2",
+        "scipy": "1.13.1",
+        "sklearn": "1.6.1"
+      },
+      "scripts_executed": 16,
+      "numerical_checks": 47,
+      "results": [
+        {
+          "id": "21",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "irls_equals_2x2_log_or": true,
+            "firth_equals_half_cell_correction": true,
+            "flic_restores_observed_mean": true
+          },
+          "values": {
+            "log_odds_ratio": 1.791759471824021,
+            "flic_mean_risk": 0.020000000000000077
+          }
+        },
+        {
+          "id": "22",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "logistic_repetitions": {
+              "book": 400,
+              "quick": 20,
+              "actual": 400
+            },
+            "logistic_test_n": {
+              "book": 60000,
+              "quick": 8000,
+              "actual": 60000
+            }
+          },
+          "checks": {
+            "ridge_orthogonal_solution": true,
+            "lasso_orthogonal_solution": true
+          },
+          "values": {
+            "ridge_coefficients": [
+              2.0,
+              0.6666666666666666,
+              0.26666666666666666
+            ],
+            "lasso_coefficients": [
+              2.5,
+              0.5,
+              0.0
+            ]
+          }
+        },
+        {
+          "id": "22b",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "linear_repetitions": {
+              "book": 6000,
+              "quick": 300,
+              "actual": 6000
+            }
+          },
+          "checks": {
+            "lasso_matches_moment_solution": true,
+            "nonmonotone_support_counterexample": true
+          },
+          "values": {
+            "moment_solution": [
+              0.6875000000000001,
+              0.18749999999999994
+            ],
+            "elastic_net_support_counts": [
+              2,
+              1,
+              2
+            ],
+            "active_kkt_residuals": [
+              8.881784197001252e-16,
+              1.6653345369377348e-16,
+              1.7763568394002505e-15
+            ]
+          }
+        },
+        {
+          "id": "23",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "nonlinearity_repetitions": {
+              "book": 400,
+              "quick": 40,
+              "actual": 400
+            }
+          },
+          "checks": {
+            "rcs_tail_is_linear": true,
+            "penalty_nullspace_is_not_ordinary_x_line": true,
+            "intrinsic_prior_differs_from_pseudoinverse_normal": true
+          },
+          "values": {
+            "nullspace_rss": 23.523843070984583,
+            "ordinary_line_rss": 22.37045289735103
+          }
+        },
+        {
+          "id": "24",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "cox_score_at_solution": true,
+            "full_likelihood_matches_profile": true,
+            "cif_mass_conservation": true,
+            "cause_hr_does_not_order_cif": true
+          },
+          "values": {
+            "cox_beta": 0.7751564503638384,
+            "ipcw_brier_6": 0.24459833937906406
+          }
+        },
+        {
+          "id": "24b",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "correct_target_ranking": true,
+            "wrong_target_reverses_ranking": true,
+            "fine_gray_product_limit_equals_aj": true,
+            "brier_constant_aj_identity": true
+          },
+          "values": {
+            "correct_brier": [
+              0.21638888888888888,
+              0.2633333333333333
+            ],
+            "wrong_brier": [
+              0.2958333333333333,
+              0.24888888888888888
+            ],
+            "fg_aj_max_difference": 9.43689570931383e-16
+          }
+        },
+        {
+          "id": "25",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "oob_repetitions": {
+              "book": 20000,
+              "quick": 2000,
+              "actual": 20000
+            },
+            "correlated_mean_repetitions": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 200000
+            }
+          },
+          "checks": {
+            "boosting_newton_stump_matches_sklearn": true,
+            "step_reduces_log_loss": true,
+            "oob_limit": true
+          },
+          "values": {
+            "stump_threshold": 4.5,
+            "loss_before": 0.6615632381579821,
+            "loss_after": 0.5807764880739529,
+            "variance_demo": "exact Gaussian mean distribution; random stream differs from original matrix simulation"
+          }
+        },
+        {
+          "id": "25b",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "test_n": {
+              "book": 40000,
+              "quick": 5000,
+              "actual": 40000
+            },
+            "development_repetitions": {
+              "book": 20,
+              "quick": 3,
+              "actual": 20
+            },
+            "rf_max_trees": {
+              "book": 300,
+              "quick": 60,
+              "actual": 300
+            }
+          },
+          "checks": {
+            "regularized_objective_decreases": true,
+            "gain_positive": true,
+            "all_development_samples_have_both_classes": true
+          },
+          "values": {
+            "second_order_gain": 1.1612903225806452,
+            "actual_regularized_decrease": 1.1723848485017179,
+            "development_repetitions": 20
+          }
+        },
+        {
+          "id": "26",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "backprop_matches_finite_difference": true,
+            "sgd_reduces_loss": true,
+            "parameter_count_20_64_64_1": true
+          },
+          "values": {
+            "max_gradient_error": 6.80493994487108e-11,
+            "parameters_20_64_64_1": 5569
+          }
+        },
+        {
+          "id": "26b",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "test_n": {
+              "book": 40000,
+              "quick": 5000,
+              "actual": 40000
+            },
+            "development_repetitions": {
+              "book": 20,
+              "quick": 3,
+              "actual": 20
+            }
+          },
+          "checks": {
+            "all_development_samples_have_both_classes": true,
+            "last_grid_slope_finite": true
+          },
+          "values": {
+            "development_repetitions": 20,
+            "last_grid_mean_slope": 26.270736722092956,
+            "last_grid_mean_auc": 0.4737767766182789
+          }
+        },
+        {
+          "id": "27",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "nri_n": {
+              "book": 2000000,
+              "quick": 50000,
+              "actual": 2000000
+            },
+            "population_risk_n": {
+              "book": 2000000,
+              "quick": 30000,
+              "actual": 2000000
+            },
+            "auc_bootstrap": {
+              "book": 1000,
+              "quick": 100,
+              "actual": 1000
+            },
+            "recalibration_n": {
+              "book": 1000000,
+              "quick": 20000,
+              "actual": 1000000
+            }
+          },
+          "checks": {
+            "auc_matches_pairwise_probability": true,
+            "delong_fast_matches_brute_force": true,
+            "correction_score_equations": true
+          },
+          "values": {
+            "hand_auc": 0.8333333333333334,
+            "hand_delong_se": 0.14109361221333663,
+            "recalibration_coefficients": [
+              -0.3106779585976811,
+              0.6945523966244141
+            ]
+          }
+        },
+        {
+          "id": "28",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "ols_repetitions": {
+              "book": 2000,
+              "quick": 200,
+              "actual": 2000
+            },
+            "ols_development_repetitions": {
+              "book": 600,
+              "quick": 30,
+              "actual": 600
+            },
+            "ols_bootstrap": {
+              "book": 200,
+              "quick": 50,
+              "actual": 200
+            },
+            "noise_repetitions": {
+              "book": 300,
+              "quick": 12,
+              "actual": 300
+            },
+            "noise_bootstrap": {
+              "book": 100,
+              "quick": 20,
+              "actual": 100
+            },
+            "nested_repetitions": {
+              "book": 150,
+              "quick": 8,
+              "actual": 150
+            },
+            "mean_random_bootstrap": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 200000
+            }
+          },
+          "checks": {
+            "enumerated_mean_optimism_equals_formula": true,
+            "cv_covariance_formula_equals_empirical": true,
+            "all_logistic_fits_pass_gradient": true
+          },
+          "values": {
+            "enumerated_mean_optimism": 2.222222222222224,
+            "fit_diagnostics": {
+              "fits": 112350,
+              "max_gradient": 9.999683718349726e-08,
+              "max_iterations": 31,
+              "failures": 0
+            },
+            "inner_best_mean_auc": 0.5970706489498155,
+            "outer_mean_auc": 0.5044892009753914
+          }
+        },
+        {
+          "id": "29",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "mechanism_n": {
+              "book": 400000,
+              "quick": 30000,
+              "actual": 400000
+            },
+            "imputation_n": {
+              "book": 2000,
+              "quick": 1000,
+              "actual": 2000
+            },
+            "imputation_m": {
+              "book": 20,
+              "quick": 5,
+              "actual": 20
+            },
+            "imputation_repetitions": {
+              "book": 300,
+              "quick": 20,
+              "actual": 300
+            },
+            "deployment_train_n": {
+              "book": 5000,
+              "quick": 1000,
+              "actual": 5000
+            },
+            "deployment_test_n": {
+              "book": 50000,
+              "quick": 5000,
+              "actual": 50000
+            },
+            "deployment_repetitions": {
+              "book": 60,
+              "quick": 6,
+              "actual": 60
+            },
+            "pmm_recipient_n": {
+              "book": 4000,
+              "quick": 400,
+              "actual": 4000
+            },
+            "pmm_repetitions": {
+              "book": 200,
+              "quick": 10,
+              "actual": 200
+            },
+            "deployment_imputations": {
+              "book": 10,
+              "quick": 5,
+              "actual": 10
+            },
+            "probability_draws": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 200000
+            }
+          },
+          "checks": {
+            "rubin_total_variance_includes_between_component": true,
+            "pmm_uses_observed_positive_donors": true
+          },
+          "values": {
+            "rubin_pooled_estimate": 1.02,
+            "rubin_total_variance": 0.04914000000000001,
+            "rubin_se": 0.22167543842293402
+          }
+        },
+        {
+          "id": "30",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "development_repetitions": {
+              "book": 300,
+              "quick": 10,
+              "actual": 300
+            },
+            "test_n": {
+              "book": 100000,
+              "quick": 5000,
+              "actual": 100000
+            },
+            "se_repetitions": {
+              "book": 600,
+              "quick": 40,
+              "actual": 600
+            },
+            "auc_population_n": {
+              "book": 400000,
+              "quick": 30000,
+              "actual": 400000
+            }
+          },
+          "checks": {
+            "planning_three_criteria_maximum": true,
+            "weaker_model_needs_more_development_data": true,
+            "slope_information_positive": true
+          },
+          "values": {
+            "planning_n": 1182,
+            "planning_r2cs": 0.12716057053974927,
+            "external_slope_n": 4719.942655912463
+          }
+        },
+        {
+          "id": "31",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {
+            "case_control_population_n": {
+              "book": 1000000,
+              "quick": 100000,
+              "actual": 1000000
+            },
+            "case_control_each_group": {
+              "book": 3000,
+              "quick": 1000,
+              "actual": 3000
+            },
+            "balance_large_train_n": {
+              "book": 40000,
+              "quick": 4000,
+              "actual": 40000
+            },
+            "balance_repetitions": {
+              "book": 300,
+              "quick": 8,
+              "actual": 300
+            },
+            "balance_test_n": {
+              "book": 200000,
+              "quick": 10000,
+              "actual": 200000
+            },
+            "causal_n": {
+              "book": 400000,
+              "quick": 20000,
+              "actual": 400000
+            },
+            "case_control_evaluation_n": {
+              "book": 200000,
+              "quick": 20000,
+              "actual": 200000
+            }
+          },
+          "checks": {
+            "weighted_auc_ties_receive_half_credit": true,
+            "ipw_effective_sample_size_le_n": true,
+            "policy_changes_risk": true
+          },
+          "values": {
+            "prior_log_odds_shift": 3.4454780528269886,
+            "ipw_effective_sample_size": 106214.39939799305,
+            "policy_extra_events_per_100": 6.0
+          }
+        },
+        {
+          "id": "31b",
+          "mode": "book",
+          "scope": "independent mathematical demonstration; not the main clinical case",
+          "python": "3.9.20",
+          "budgets": {},
+          "checks": {
+            "sufficient_adjustment_recovers_true_coefficients": true,
+            "quadrature_stable": true,
+            "ordinary_ipw_targets_population": true,
+            "x_stabilized_weights_change_target": true
+          },
+          "values": {
+            "conditioning": {
+              "quadrature_order": 80,
+              "full_L_logistic_coefficients": [
+                -1.0,
+                0.8,
+                0.8,
+                -1.2
+              ],
+              "X_plus_A_logistic_coefficients": [
+                -1.2524108202443323,
+                0.6378676742575008,
+                -0.41239986616577007
+              ],
+              "intervention_risks_at_X0": [
+                0.292957559560246,
+                0.12202942839436344
+              ],
+              "observed_risks_at_X0": [
+                0.22358674238493315,
+                0.15890104095861846
+              ],
+              "intervention_risk_difference": -0.17092813116588257,
+              "observed_risk_difference": -0.06468570142631469,
+              "ipw_risks_at_X0": [
+                0.292957559560246,
+                0.12202942839436344
+              ]
+            },
+            "stabilization": {
+              "stratum_mass": [
+                0.5,
+                0.5
+              ],
+              "untreated_probability": [
+                0.9,
+                0.1
+              ],
+              "risk_under_no_treatment": [
+                0.1,
+                0.4
+              ],
+              "prediction": 0.25,
+              "target_brier": 0.1875,
+              "ordinary_ipw_brier": 0.1875,
+              "X_stabilized_normalized_brier": 0.1275,
+              "constant_stabilized_normalized_brier": 0.1875
+            },
+            "quadrature_60_vs_80_max_change": 3.885780586188048e-16
+          }
+        }
+      ]
+    }
+  }
+}

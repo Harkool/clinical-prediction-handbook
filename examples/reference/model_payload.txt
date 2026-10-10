@@ -1,0 +1,53 @@
+list10[12:coefficients610:double19[namescharacter19[unnamed;11:(Intercept)10:age_linear8:age_rcs18:age_rcs23:bmi4:male6:asa_II7:asa_III6:asa_IV9:emergency8:diabetes4:copd6:smoker3:chf3:sbp2:hr2:hb3:alb8:log_crea];18:-3.88396993594758318:0.380162767236855621:-0.01463143205427891319:0.6952277793247730919:0.1818949962642704719:0.1384379545533045719:0.4690123064082269419:0.6928863407296165218:1.396942036191012319:0.5923256615381300420:0.09971161650107104919:0.4191684289544370719:0.2644114407730374119:0.8343569564207461421:-0.09318998310428783219:0.2070705946770758120:-0.2032609969357196120:-0.4928794074022195319:0.21536674224501126]14:implementation3145:list4[11:make_design1107:character1[unnamed;1082:{
+    missing <- setdiff(recipe$predictors, names(d))
+    if (length(missing)) 
+        stop("Missing inputs: ", paste(missing, collapse = ", "))
+    if (anyNA(d[recipe$predictors])) 
+        stop("Case A requires complete inputs; use a separately validated missing-input strategy.")
+    binary <- c("male", "emergency", "diabetes", "copd", "smoker", "chf")
+    if (any(!as.matrix(d[binary]) %in% c(0, 1))) 
+        stop("Binary inputs must be 0/1")
+    if (any(!d$asa %in% 1:4) || any(d$crea <= 0)) 
+        stop("Invalid ASA or creatinine")
+    X <- cbind(`(Intercept)` = rep(1, nrow(d)), rcs_age(d$age, recipe$age_knots), bmi = (d$bmi - 25)/5, male = d$male, asa_II = as.integer(d$asa == 2), asa_III = as.integer(d$asa == 3), asa_IV = as.integer(d$asa == 4), emergency = d$emergency, diabetes = d$diabetes, copd = d$copd, smoker = d$smoker, chf = d$chf, sbp = (d$sbp - 120)/20, hr = (d$hr - 75)/15, hb = (d$hb - 130)/20, alb = (d$alb - 40)/5, log_crea = log(d$crea/80))
+    storage.mode(X) <- "double"
+    if (any(!is.finite(X))) 
+        stop("Non-finite design values")
+    X
+}]15:normalise_units1288:character1[unnamed;1263:{
+    canonical <- case_units()
+    if (!is.character(units) || is.null(names(units)) || anyDuplicated(names(units)) || !setequal(names(units), names(canonical)) || anyNA(units)) 
+        stop("Declare exactly one explicit unit for each of the 14 inputs")
+    if (length(setdiff(names(canonical), names(d)))) 
+        stop("Missing raw inputs")
+    conversions <- case_unit_conversions()
+    for (k in names(canonical)) {
+        if (!is.numeric(d[[k]]) || any(!is.finite(d[[k]]))) 
+            stop("Non-finite/non-numeric input: ", k)
+        if (units[[k]] != canonical[[k]]) {
+            i <- which(conversions$field == k & conversions$from == units[[k]] & conversions$to == canonical[[k]])
+            if (length(i) != 1L) 
+                stop("Unsupported explicit unit for ", k, ": ", units[[k]])
+            d[[k]] <- d[[k]] * conversions$multiplier[i]
+        }
+    }
+    ranges <- case_input_ranges()
+    for (k in names(ranges)) if (any(d[[k]] < ranges[[k]][1] | d[[k]] > ranges[[k]][2])) 
+        stop("Outside prespecified synthetic teaching domain: ", k)
+    binary <- c("male", "emergency", "diabetes", "copd", "smoker", "chf")
+    if (any(!as.matrix(d[binary]) %in% 0:1) || any(!d$asa %in% 1:4)) 
+        stop("Invalid binary/ASA level")
+    d
+}]12:predict_case226:character1[unnamed;202:{
+    X <- make_design(newdata, model$recipe)
+    if (!identical(colnames(X), names(model$fit$coefficients))) 
+        stop("Model/recipe mismatch")
+    as.vector(plogis(X %*% model$fit$coefficients))
+}]7:rcs_age443:character1[unnamed;419:{
+    positive_cube <- function(z) pmax(z, 0)^3
+    last <- length(knots)
+    a <- knots[last - 1]
+    b <- knots[last]
+    nonlinear <- do.call(cbind, lapply(knots[seq_len(last - 2)], function(k) (positive_cube(x - k) - positive_cube(x - a) * (b - k)/(b - a) + positive_cube(x - b) * (a - k)/(b - a))/((b - knots[1])^2 * 10)))
+    cbind(age_linear = (x - 50)/10, age_rcs1 = nonlinear[, 1], age_rcs2 = nonlinear[, 2])
+}]]17:level_definitions120:list3[3:asa30:integer4[unnamed;1:11:21:31:4]13:asa_reference21:integer1[unnamed;1:1]6:binary24:integer2[unnamed;1:01:1]]6:recipe262:list4[9:age_knots33:double4[unnamed;2:202:452:652:85]10:parameters22:integer1[unnamed;2:18]10:predictors106:character14[unnamed;3:age3:bmi4:male3:asa9:emergency8:diabetes4:copd6:smoker3:chf3:sbp2:hr2:hb3:alb4:crea]7:version35:character1[unnamed;12:A-2026-10-10]]6:schema48:character1[unnamed;25:case-A-prediction-rule-v1]6:target281:list4[13:decision_time76:character1[unnamed;53:pre-anaesthetic assessment complete, before induction]7:outcome63:character1[unnamed;40:30-day CD >= III, including death (CD V)]14:outcome_origin46:character1[unnamed;23:actual start of surgery]11:window_days21:double1[unnamed;2:30]]15:teaching_domain475:list14[3:age25:double2[unnamed;2:182:90]3:alb25:double2[unnamed;2:202:52]3:asa23:double2[unnamed;1:11:4]3:bmi25:double2[unnamed;2:162:45]3:chf23:double2[unnamed;1:01:1]4:copd23:double2[unnamed;1:01:1]4:crea26:double2[unnamed;2:303:400]8:diabetes23:double2[unnamed;1:01:1]9:emergency23:double2[unnamed;1:01:1]2:hb26:double2[unnamed;2:703:180]2:hr26:double2[unnamed;2:403:140]4:male23:double2[unnamed;1:01:1]3:sbp26:double2[unnamed;2:753:200]6:smoker23:double2[unnamed;1:01:1]]16:unit_conversions207:list4[5:field35:character3[unnamed;2:hb3:alb4:crea]4:from39:character3[unnamed;4:g/dL4:g/dL5:mg/dL]10:multiplier46:double3[unnamed;2:102:1018:88.400000000000006]2:to38:character3[unnamed;3:g/L3:g/L6:umol/L]]5:units208:character14[namescharacter14[unnamed;3:age3:bmi4:male3:asa9:emergency8:diabetes4:copd6:smoker3:chf3:sbp2:hr2:hb3:alb4:crea];4:year5:kg/m23:0/14:I-IV3:0/13:0/13:0/13:0/13:0/14:mmHg8:beat/min3:g/L3:g/L6:umol/L]7:version35:character1[unnamed;12:A-2026-10-10]]

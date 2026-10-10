@@ -1,0 +1,17 @@
+outputs/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.Rhistory
+.RData
+.Ruserdata
+R-library/
+.DS_Store
+Thumbs.db
+*.zip
+*.log
+*.pdf
+.env
+.env.*

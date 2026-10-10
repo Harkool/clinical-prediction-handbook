@@ -1,0 +1,8 @@
+"lower","upper","n","events","mean_prediction","event_rate","wilson_lower","wilson_upper","scope"
+0,0.05,994,30,0.0295617791953839,0.0301810865191147,0.0212215482078776,0.0427580131305995,"within-group apparent event rate; descriptive Wilson interval"
+0.05,0.1,946,67,0.0723356290778166,0.0708245243128964,0.0561540660043178,0.088966424937229,"within-group apparent event rate; descriptive Wilson interval"
+0.1,0.15,426,58,0.123420891041489,0.136150234741784,0.106818581961892,0.171985280163202,"within-group apparent event rate; descriptive Wilson interval"
+0.15,0.2,251,40,0.173025986753397,0.159362549800797,0.119267214460066,0.209727365969191,"within-group apparent event rate; descriptive Wilson interval"
+0.2,0.3,326,67,0.242006201757161,0.205521472392638,0.165208527642078,0.252693634546776,"within-group apparent event rate; descriptive Wilson interval"
+0.3,0.5,196,85,0.37786834508897,0.433673469387755,0.366226569299717,0.503670297179184,"within-group apparent event rate; descriptive Wilson interval"
+0.5,1,61,37,0.610213880383838,0.60655737704918,0.481172526289789,0.719316485469629,"within-group apparent event rate; descriptive Wilson interval"
