@@ -2,7 +2,9 @@
 
 **English** · [中文](README.md)
 
-Companion to the *Clinical Prediction Model Development Practical Handbook*, version **v2.0.0**. All implementations are Python; R is not required. The book contains practical steps, formulas and interpretation, with a separate short linear algebra primer. Code and commands live here.
+Companion to the *Clinical Prediction Model Development Practical Handbook*, version **v2.0.0**. All implementations are Python; R is not required. The practical book can be read independently: it explains the concepts, reasons for each step, formula notation and interpretation needed for the exercises. The theory volume is optional further reading at the end of each chapter. A separate short linear algebra primer comes before the first modeling chapter; code and commands live here.
+
+For a first pass, read practical chapters 1–8, 12–13 and 18 to develop, validate and report a fixed model, then return to the other practical branches. Chapters 21–31 provide optional numerical labs for deeper understanding. The [learning path](docs/learning-path.md) connects reading, project tasks and completion criteria.
 
 All **31 original chapters have executable entry points**, including 16 numerical labs. The [chapter coverage inventory](docs/chapter-coverage.md) distinguishes implemented exercises, partial coverage and manual work; numbered coverage does not imply every method is implemented.
 
