@@ -2,7 +2,7 @@
 
 [English](README.en.md) · **中文**
 
-《临床预测模型开发实操手册》配套项目，当前版本 **v2.0.0**。全部实现采用 Python，不需要 R。书稿可以独立阅读，操作所需概念、步骤理由、公式符号与结果判读均在书内说明；理论册在章末列为加深理解的选读。代码和具体命令集中在本项目；独立线性代数短章位于首次建模前。
+《临床预测模型开发实操手册》配套项目，当前版本 **v2.0.1**。全部实现采用 Python，不需要 R。书稿可以独立阅读，操作所需概念、步骤理由、公式符号与结果判读均在书内说明；理论册在章末列为加深理解的选读。代码和具体命令集中在本项目；独立线性代数短章位于首次建模前。
 
 初次学习建议先读实操册第 1—8、12—13、18 章，完成一次固定模型的开发、验证和报告，再补其他实操分支。第 21—31 章是按问题选读的原理实验。[学习路径](docs/learning-path.md) 将阅读、项目任务和完成标准连起来。
 
@@ -103,4 +103,4 @@ python -m unittest discover -s tests -v
 
 GitHub Actions 检查 Windows、macOS、Linux。完整预算由维护者手动触发。[章节指南](docs/chapter-guide.md) · [学习路线](docs/learning-path.md) · [数学实验](docs/math-labs.md) · [故障排查](docs/troubleshooting.md) · [贡献](CONTRIBUTING.md)
 
-代码、仓库文档、模板及合成示例采用 [MIT](LICENSE)。书稿与 PDF 单独授权，见 [授权边界](BOOK_LICENSE.md)。引用软件时使用 [CITATION.cff](CITATION.cff) 并注明版本。
+代码、仓库文档、模板及合成示例采用 [MIT](LICENSE)。2026-10-12 修订的实操册正文与 PDF 采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)，见 [授权边界](BOOK_LICENSE.md)；理论册授权本次未变。引用软件时使用 [CITATION.cff](CITATION.cff) 并注明版本。

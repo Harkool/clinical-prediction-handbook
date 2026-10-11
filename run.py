@@ -14,7 +14,7 @@ import sys
 import time
 
 ROOT = Path(os.path.abspath(__file__)).parent
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 
 
 def output_dir(mode):

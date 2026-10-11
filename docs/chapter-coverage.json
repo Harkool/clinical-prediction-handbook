@@ -1,5 +1,5 @@
 {
-  "book_revision": "Python 实操版（2026-10-11），配套项目 v2.0.0",
+  "book_revision": "Python 独立学习版（2026-10-12），配套项目 v2.0.1；M31 配对设计修复，其余覆盖范围保持",
   "book_source": "latex/ch/ch01.tex—ch31.tex（书稿单独授权，不在本仓库内分发）",
   "scope_note": "原有 31 个章节编号均有真实 Python 入口；覆盖分级针对该章可执行教学内容，不表示全部算法扩展或真实研究步骤均已实现。不编号的线性代数基础另有独立入口。",
   "coverage_levels": {

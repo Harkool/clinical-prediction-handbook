@@ -246,5 +246,17 @@ for C in SIM_C:
     print(f"      （C={C}：R²_CS = {r2:.4f}；n1 = {sz['n1']:.0f}，n2 = {sz['n2']:.0f}（S2 = {sz['S2']:.4f}），n3 = {sz['n3']:.0f}）")
 print(f"总用时 {time.time() - t0:.0f} 秒")
 
+# Same AUC and event fraction do not identify the two conditional placement variances.
+# Group sizes are fixed. In the first population the event score is constant;
+# in the second the non-event score is constant. Both orderings have P(S1>S0)=.75.
+counterexample_n1, counterexample_n0, counterexample_c = 20, 980, 0.75
+variance_constant_events = counterexample_c * (1 - counterexample_c) / counterexample_n0
+variance_constant_controls = counterexample_c * (1 - counterexample_c) / counterexample_n1
+counterexample_se = [float(np.sqrt(variance_constant_events)),
+                    float(np.sqrt(variance_constant_controls))]
+print("\nF. 相同 C=.75、固定事件20/非事件980的方差反例（解析值，不是Monte Carlo估计）")
+print("事件评分恒定：SE=%.6f；非事件评分恒定：SE=%.6f；比值=%.1f" %
+      (counterexample_se[0], counterexample_se[1], counterexample_se[1] / counterexample_se[0]))
+
 # Repository acceptance checks use exact identities where possible.
-write_result('30', {'planning_three_criteria_maximum': planning['n']==int(np.ceil(max(planning['n1'],planning['n2'],planning['n3']))), 'weaker_model_needs_more_development_data': sample_size(.70,.12)['n'] > planning['n'], 'slope_information_positive': info_slope > 0}, {'planning_n': planning['n'], 'planning_r2cs': float(planning['r2']), 'external_slope_n': float(n_sl)})
+write_result('30', {'planning_three_criteria_maximum': planning['n']==int(np.ceil(max(planning['n1'],planning['n2'],planning['n3']))), 'weaker_model_needs_more_development_data': sample_size(.70,.12)['n'] > planning['n'], 'slope_information_positive': info_slope > 0, 'same_auc_can_have_sevenfold_standard_error': abs(counterexample_se[1] / counterexample_se[0] - 7) < 1e-12}, {'planning_n': planning['n'], 'planning_r2cs': float(planning['r2']), 'external_slope_n': float(n_sl), 'auc_distribution_counterexample': {'auc': counterexample_c, 'events': counterexample_n1, 'non_events': counterexample_n0, 'se_event_scores_constant': counterexample_se[0], 'se_non_event_scores_constant': counterexample_se[1]}})

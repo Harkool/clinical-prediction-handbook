@@ -105,7 +105,20 @@ print(f"数据生成：{P_PRED} 个等系数正态预测因子，a = {a_b:.4f}�
 Xt = rng.normal(size=(N_TEST_B, P_PRED)); pit = expit(a_b + Xt @ beta_b); yt = rng.binomial(1, pit).astype(float)
 
 
-def develop(X, yv, method):
+def prior_correct(coefficients, original_prevalence, sampled_prevalence=0.5):
+    """Shift one fitted sampling model's intercept; never resample or refit."""
+    coefficients = np.asarray(coefficients, dtype=float)
+    if (coefficients.ndim != 1 or len(coefficients) < 1 or
+            not np.all(np.isfinite(coefficients)) or
+            not 0 < original_prevalence < 1 or not 0 < sampled_prevalence < 1):
+        raise ValueError("Finite coefficients and prevalences strictly inside (0, 1) required")
+    adjusted = coefficients.copy()
+    adjusted[0] += (np.log(original_prevalence / (1 - original_prevalence)) -
+                    np.log(sampled_prevalence / (1 - sampled_prevalence)))
+    return adjusted
+
+
+def develop(X, yv, method, oversampled_coefficients=None):
     n1, n0 = int(yv.sum()), int((1 - yv).sum())
     if method == "不处理":
         return irls(np.c_[np.ones(len(yv)), X], yv)
@@ -121,8 +134,9 @@ def develop(X, yv, method):
         sw = np.where(yv == 1, n0 / n1, 1.0)
         return irls(np.c_[np.ones(len(yv)), X], yv, sw)
     if method == "过采样 + 先验校正":
-        b_ = develop(X, yv, "过采样至1:1"); r = (n0 / n0) / (n1 / n0)    # 采样后比值 1，原比值 n1/n0
-        b_ = b_.copy(); b_[0] -= np.log(r); return b_
+        if oversampled_coefficients is None:
+            raise ValueError("Prior correction requires the paired oversampling fit")
+        return prior_correct(oversampled_coefficients, n1 / len(yv))
     raise ValueError(method)
 
 
@@ -132,8 +146,18 @@ Xd = rng.normal(size=(N_LARGE, P_PRED)); yd = rng.binomial(1, expit(a_b + Xd @ b
 n1, n0 = int(yd.sum()), int((1 - yd).sum())
 print(f"预测的截距平移 = ln(n0/n1) = {np.log(n0 / n1):.4f}（平衡到 1:1 使比值乘以 n0/n1）")
 print(f"{'方法':<22}{'平均预测':>9}{'校准截距':>10}{'校准斜率':>10}{'C':>8}{'Brier':>9}")
+paired_checks = []
+oversampled_coefficients = None
 for me in methods:
-    bb = develop(Xd, yd, me); m = metrics(yt, expit(bb[0] + Xt @ bb[1:]))
+    bb = develop(Xd, yd, me, oversampled_coefficients)
+    if me == "过采样至1:1":
+        oversampled_coefficients = bb.copy()
+        oversampled_metrics = metrics(yt, expit(bb[0] + Xt @ bb[1:]))
+    m = metrics(yt, expit(bb[0] + Xt @ bb[1:]))
+    if me == "过采样 + 先验校正":
+        paired_checks.append(bool(np.array_equal(bb[1:], oversampled_coefficients[1:]) and
+            abs(m['C'] - oversampled_metrics['C']) < 1e-12 and
+            abs(m['slope'] - oversampled_metrics['slope']) < 1e-7))
     print(f"{me:<22}{m['mean_p']:>9.4f}{m['citl']:>10.3f}{m['slope']:>10.3f}{m['C']:>8.4f}{m['brier']:>9.4f}")
 print(f"（测试集事件率 {yt.mean():.4f}）")
 
@@ -143,9 +167,18 @@ for _ in range(R_SMALL):
     Xd = rng.normal(size=(N_SMALL, P_PRED)); yd = rng.binomial(1, expit(a_b + Xd @ beta_b)).astype(float)
     if yd.sum() < 8:
         continue
+    oversampled_coefficients = None
     for me in methods:
-        bb = develop(Xd, yd, me); lp_t = bb[0] + Xt @ bb[1:]; p_t = expit(lp_t)
+        bb = develop(Xd, yd, me, oversampled_coefficients)
+        if me == "过采样至1:1":
+            oversampled_coefficients = bb.copy()
+            oversampled_metrics = metrics(yt, expit(bb[0] + Xt @ bb[1:]))
+        lp_t = bb[0] + Xt @ bb[1:]; p_t = expit(lp_t)
         m = metrics(yt, p_t)
+        if me == "过采样 + 先验校正":
+            paired_checks.append(bool(np.array_equal(bb[1:], oversampled_coefficients[1:]) and
+                abs(m['C'] - oversampled_metrics['C']) < 1e-12 and
+                abs(m['slope'] - oversampled_metrics['slope']) < 1e-7))
         acc[me].append((m['mean_p'], m['citl'], m['slope'], m['C'], m['brier'], np.mean(np.abs(p_t - pit))))
 print(f"{'方法':<22}{'平均预测':>9}{'校准截距':>10}{'校准斜率':>10}{'斜率SD':>8}{'C':>8}{'Brier':>9}{'MAPE':>8}")
 for me in methods:
@@ -216,4 +249,4 @@ print("模型对 H 组的预测 0.60；部署后 H 组的实际 0.80（校准变
 print(f"总用时 {time.time() - t0:.0f} 秒")
 
 # Repository acceptance checks use exact identities where possible.
-write_result('31', {'weighted_auc_ties_receive_half_credit': abs(wauc(np.array([1,0]),np.array([.5,.5]),np.array([2.,3.]))-.5) < 1e-12, 'ipw_effective_sample_size_le_n': w_un.sum()**2/(w_un**2).sum() <= len(w_un)+1e-9, 'policy_changes_risk': abs(stats_policy(r_notreat)[0]-stats_policy(r_treat)[0]-.06) < 1e-12}, {'prior_log_odds_shift': float(shift), 'ipw_effective_sample_size': float(w_un.sum()**2/(w_un**2).sum()), 'policy_extra_events_per_100': 6.0})
+write_result('31', {'weighted_auc_ties_receive_half_credit': abs(wauc(np.array([1,0]),np.array([.5,.5]),np.array([2.,3.]))-.5) < 1e-12, 'ipw_effective_sample_size_le_n': w_un.sum()**2/(w_un**2).sum() <= len(w_un)+1e-9, 'policy_changes_risk': abs(stats_policy(r_notreat)[0]-stats_policy(r_treat)[0]-.06) < 1e-12, 'prior_correction_reuses_paired_fit_and_preserves_auc_slope': bool(paired_checks) and all(paired_checks)}, {'prior_log_odds_shift': float(shift), 'ipw_effective_sample_size': float(w_un.sum()**2/(w_un**2).sum()), 'policy_extra_events_per_100': 6.0, 'paired_oversampling_comparisons': len(paired_checks)})

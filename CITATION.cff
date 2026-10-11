@@ -5,8 +5,8 @@ title: "Clinical Prediction Handbook: 逐章实操项目"
 authors:
   - family-names: Liu
     given-names: Hao
-version: 2.0.0
-date-released: 2026-10-11
+version: 2.0.1
+date-released: 2026-10-12
 url: "https://github.com/Harkool/clinical-prediction-handbook"
 repository-code: "https://github.com/Harkool/clinical-prediction-handbook"
 license: MIT

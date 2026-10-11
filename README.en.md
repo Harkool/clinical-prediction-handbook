@@ -2,7 +2,7 @@
 
 **English** · [中文](README.md)
 
-Companion to the *Clinical Prediction Model Development Practical Handbook*, version **v2.0.0**. All implementations are Python; R is not required. The practical book can be read independently: it explains the concepts, reasons for each step, formula notation and interpretation needed for the exercises. The theory volume is optional further reading at the end of each chapter. A separate short linear algebra primer comes before the first modeling chapter; code and commands live here.
+Companion to the *Clinical Prediction Model Development Practical Handbook*, version **v2.0.1**. All implementations are Python; R is not required. The practical book can be read independently: it explains the concepts, reasons for each step, formula notation and interpretation needed for the exercises. The theory volume is optional further reading at the end of each chapter. A separate short linear algebra primer comes before the first modeling chapter; code and commands live here.
 
 For a first pass, read practical chapters 1–8, 12–13 and 18 to develop, validate and report a fixed model, then return to the other practical branches. Chapters 21–31 provide optional numerical labs for deeper understanding. The [learning path](docs/learning-path.md) connects reading, project tasks and completion criteria.
 
@@ -102,4 +102,4 @@ python -m unittest discover -s tests -v
 
 GitHub Actions check Windows, macOS and Linux; full budgets are manually triggered. [Chapter guide](docs/chapter-guide.md) · [Learning path](docs/learning-path.md) · [Math labs](docs/math-labs.md) · [Troubleshooting](docs/troubleshooting.md) · [Contributing](CONTRIBUTING.md)
 
-Code, repository documentation, templates and synthetic examples use [MIT](LICENSE). Book manuscripts and PDFs are separately licensed; see [book licensing](BOOK_LICENSE.md). Cite the software version using [CITATION.cff](CITATION.cff).
+Code, repository documentation, templates and synthetic examples use [MIT](LICENSE). The practical handbook's text and PDF revised on 2026-10-12 use [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/); see [book licensing](BOOK_LICENSE.md). The theory handbook's license is unchanged. Cite the software version using [CITATION.cff](CITATION.cff).
