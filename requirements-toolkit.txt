@@ -1,0 +1,4 @@
+# Optional DataFrame environment; core array APIs and baseline tables do not need pandas.
+-r requirements.txt
+pandas==2.2.3
+matplotlib==3.9.4

@@ -182,7 +182,9 @@ def gen(n):
     return x1, x2, yv
 bayes_c = sig ** 2                       # X1、X2 都有：不可约误差
 bayes_m = sig ** 2 + (1 - RHO ** 2)      # 只有 X2：Var(Y|X2) = σ² + Var(X1|X2)
-strategies = ["完整病例", "回归填补（确定性，不含结局）", "MI 不含结局", "MI 含结局"]
+# This fixed-parameter random imputation is a prediction-algorithm contrast.
+# It does not draw the X1|X2 regression parameters and is NOT proper MI for Rubin inference.
+strategies = ["完整病例", "回归填补（确定性，不含结局）", "固定参数随机填补（不含结局）", "MI 含结局"]
 acc = {s: [] for s in strategies}
 for rep in range(R_E):
     x1, x2, yv = gen(N_DEV); miss = rng.uniform(size=N_DEV) < Q_MISS
@@ -199,7 +201,7 @@ for rep in range(R_E):
         bs_x.append(ols_se(np.c_[np.ones(N_DEV), xi, x2], yv)[0])
         xi2 = impute_with_y(x1, yv, miss, covariates=x2)
         bs_y.append(ols_se(np.c_[np.ones(N_DEV), xi2, x2], yv)[0])
-    coefs["MI 不含结局"] = np.mean(bs_x, 0); coefs["MI 含结局"] = np.mean(bs_y, 0)
+    coefs["固定参数随机填补（不含结局）"] = np.mean(bs_x, 0); coefs["MI 含结局"] = np.mean(bs_y, 0)
     # 部署：测试集，X1 同样 MCAR 缺失，缺失者用 E[X1|X2] 补值（确定性）或抽一次
     # 超额 MSE = E[(预测 − 最优预测)²]：最优预测在模拟里已知（X1 有：X1+X2；X1 缺：(1+ρ)X2），可去掉结局的抽样噪声
     t1, t2, _ty = gen(N_TEST); tm = rng.uniform(size=N_TEST) < Q_MISS

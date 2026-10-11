@@ -1,37 +1,50 @@
-# 实际验证与证据边界
+# v2 实际验证记录
 
-本页记录项目的实跑检查。运行日期：2026-10-11；本地环境：Windows、R 4.6.1（survival 3.8.6）、Python 3.9.20、NumPy 2.0.2、SciPy 1.13.1、scikit-learn 1.6.1。数学安装锁定版本支持 Python 3.9—3.12；持续集成使用 Python 3.11。
+本页记录 2026-10-11 纯 Python 版本的本地实跑结果。环境为 Windows、Python 3.9.20、NumPy 2.0.2、SciPy 1.13.1、scikit-learn 1.6.1、Matplotlib 3.9.4。机器可读记录见 [release-validation.json](release-validation.json)。
 
-## 数学实验
+## 已执行的检查
 
-第 21—31 章的 16 个脚本分别以 quick 与 book 实际执行，每种模式的 47 项数值验收全部通过。记录包含实际预算、关键结果和环境，见 [reference_results.json](../math/reference_results.json)。确定性合同另由 5 项 Python 测试核对，包括二乘二表 log OR、原因 1 Brier、反向传播梯度及稳定权重目标。
+|检查|本轮结果|范围|
+|---|---|---|
+|第 1—20 章主线课程|quick 与 book 均 20/20 `PASS_EXECUTED`|各章练习执行完成，人工审核项仍按章保留|
+|独立预测核查|quick 与 book 均 `PASS`|从输入、规则和系数独立重算预测、表观 C 与 Brier|
+|Python 测试|103 项通过，12.980 秒|包含泄漏、重复患者、错误标签/单位、未收敛、错误身份与失败重跑反例|
+|第 21—31 章数学实验|16 个 quick 实验、48 项数值检查通过|含 22b、24b、25b、26b、31b|
+|M26b 完整预算|200 个网格拟合通过收敛与指标检查|20 个开发样本；不可估计的校准斜率明确记为 `null`|
+|工具箱与基线表|quick 报告均 `PASS`|工具箱验证折内预处理、OOF 与学习曲线；基线表核对分母与缺失|
 
-第 25 章将相关正态树预测的大矩阵换成其均值的精确正态分布抽样，保留分布和理论方差；随机流消耗变化，所以不要求模拟末位相同。其他快速模拟预算与书籍预算的差异逐项列于 [数学指南](math-labs.md)。
+其他 15 个数学实验的 book 记录沿用历史执行结果，本轮未重新运行其完整预算。数学实跑记录及具体预算见 [reference_results.json](../math/reference_results.json) 与 [数学指南](math-labs.md)。不要将历史记录理解为本轮全部数学完整预算通过。
 
-## R 课程与独立核查
+## 固定主线与数值复现
 
-最终代码的第 1—20 章已分别以 quick 与 book 完成实际运行，book 最终重跑耗时约 385 秒。完整预算包括开发 200 次、条件评价 500 次、校准 200 / 500 次，以及双重 bootstrap 200 × 50。输入保护与状态记录通过 quick 全 20 章及 20 项 R 语义检查。
+主线读取冻结的合成病例 A：3200 人、384 个事件、14 个输入、18 个待估参数，设计矩阵含截距共 19 列。输入文件已去除生成器的理想风险答案列。Python 模型与保留的原书参考相比，19 个系数最大绝对差为 `1.4707823847714963e-10`，3200 个预测最大绝对差为 `7.190983919436178e-12`。
 
-独立 Python 设计矩阵重算原书合成主线的全部 3200 个预测，最大差为 `2.9976021664879227e-15`，C = `0.7712383848248106`，Brier = `0.09069047612869838`，事件数 384。验证对 CSV 系数、输入、预测与 R 表观指标同时检查，并在报告中绑定这些文件的 SHA-256。
+独立 `verify` 对本次 Python 导出预测的最大差为 `3.3306690738754696e-16`，表观 C 为 `0.7712383848248106`，Brier 为 `0.09069047612870058`。该核查与课程覆盖分开：单章也可核查已有有效产物；完整 20 章覆盖由 `manifest.csv` 证明。`verify` 拒绝记录中的 STALE、FAIL、RUNNING 和来源变化，不能用旧成功产物替代当前执行。
 
-15 项 Python 测试全部通过，实际触发了错误预测、患者错序、非有限输入/指标、缺文件和失败重跑。成功记录每次先作废为 RUNNING，本次失败写 FAIL，避免旧 PASS 被误认为当前结果。R 课程的输入拒绝、标签、单位、折分工及人工待审项目由 `tests/test_course.R` 的 20 项语义检查验证。
+模型 JSON 使用完整预测规则与来源的 SHA-256 身份。冻结输入的历史数值可复现；新增合成验证数据和重抽样使用 NumPy PCG64，因此不要求与历史随机流的 bootstrap、区间或曲线数值逐项相同。
+
+## 主线完整预算
+
+book 已实际执行开发 bootstrap 200 次、固定模型条件评价 500 次、校准开发/条件重抽样 200/500 次、双重 bootstrap 200 × 50、亚组重抽样 300 次。固定模型区间每个指标均有 500 个有效重复、0 个失败；校准日志的 700 个重复均通过。失败重复不会被删除或替换后继续汇总。
+
+校正平滑曲线输出点估计和乐观偏倚 MCSE；条件带针对固定模型的表观曲线，属于逐点区间。双重 bootstrap 的经验分位数范围没有已证实的外部覆盖保证。工具箱学习曲线报告各折均值与标准差，标准差没有充当置信区间。
 
 ## 自己复验
 
+先按 [安装指南](installation.md) 安装依赖，再在项目目录执行：
+
 ```sh
+python run.py doctor
 python run.py course --mode quick
 python run.py verify --mode quick
-Rscript --vanilla tests/test_course.R
-python -m unittest discover -s tests -v
+python -m unittest discover -s tests -p "test_*.py"
 python run.py math all --mode quick
+python run.py toolkit --mode quick
+python run.py baseline --mode quick
 ```
 
-新机器上从同一提交重新运行，不搬运开发者缓存。`outputs/` 中的数据、模型、日志和图表只属于该次本地操作，没有纳入仓库。`examples/reference/` 的旧书门禁属于参考产物，不能复制成自己的审阅决定。
+完整主线可改用 `python run.py course --mode book`，随后执行 `python run.py verify --mode book`。每次运行使用自己的 `outputs/quick/` 或 `outputs/book/`；输出没有纳入仓库。参考文件及摘要见 [examples/reference](../examples/reference/README.md)，参考门禁不能复制为自己的审核记录。
 
-从公开 GitHub 仓库重新 clone 的代码已独立跑通 20 章快速课程、预测核查和数学第 24b 实验；16 个参考文件字节摘要全部匹配。最终 book 结果的开发 bootstrap、双重 bootstrap、校准曲线、分组、规格、3200 个预测及 19 个系数，与原书参考共同数值字段的最大差异均为 0。
+v2 的公开推送、全新 clone 复验和远端 CI 尚待本轮发布后核实，结构化记录暂为 `pending_public_push`。历史版本的 CI 成功不能作为 v2 的验证结论。
 
-Windows、macOS、Linux 的远端快速流程均已成功，见 [首次三平台运行](https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38072548229)。该流程涵盖 20 章课程、独立预测核查、20 项 R 检查、15 项 Python 测试及全部 16 个快速数学实验。实现提交为 `3f90562a921d4aca46b32709afff84e84568148c`；之后的发行记录提交只更新文档，不改变已测代码。结构化记录见 [release-validation.json](release-validation.json)。完整预算的远端任务按需手动触发，本地完整预算已经执行。
-
-## 这些检查证明什么
-
-检查验证代码按声明数据流执行、数值合同及导出一致性。合成外部队列只练习验证/更新操作；B 分支只完成估计；完整 MICE 和表格基础模型未接入主线。有限预算区间没有已证实的外部覆盖保证，条件曲线带没有同时覆盖保证。临床可用性、真实数据质量、伦理与人工签字仍须另行完成。
+所有数据都是合成教学数据。B 分支的独立原因别 Cox 练习、缺失数据示例、表格基础模型入口及人工审阅的范围与待办仍以各章说明为准；运行成功不能代替临床有效性、真实外部验证或人工签字。

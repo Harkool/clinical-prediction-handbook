@@ -59,6 +59,11 @@ print("limit of loglik as beta1->inf:", 2*np.log(0.2)+8*np.log(0.8))
 
 # ---------- Firth ----------
 def firth(X, y, maxit=200, tol=1e-10):
+    X, y = np.asarray(X, float), np.asarray(y, float)
+    if (X.ndim != 2 or y.shape != (len(X),) or not len(X) or
+            not np.all(np.isfinite(X)) or not np.all(np.isin(y, [0, 1])) or
+            np.linalg.matrix_rank(X) != X.shape[1] or maxit < 1 or tol <= 0):
+        raise ValueError("Firth demonstration requires a finite full-rank design and binary outcomes")
     b = np.zeros(X.shape[1])
     for _ in range(maxit):
         eta = X@b; p = sigmoid(eta); w = p*(1-p)
@@ -67,12 +72,18 @@ def firth(X, y, maxit=200, tol=1e-10):
         h = w*np.einsum('ij,jk,ik->i', X, Iinv, X)
         Ustar = X.T@(y - p + h*(0.5-p))
         step = Iinv@Ustar
-        # step-halving for safety
+        # Cap the Newton step; this is not an objective-based line search.
         mx = np.max(np.abs(step))
         if mx>5: step *= 5/mx
         b = b + step
-        if np.max(np.abs(step))<tol: break
-    return b, Iinv
+        if np.max(np.abs(step))<tol:
+            p = sigmoid(X@b); w = p*(1-p)
+            final_Iinv = np.linalg.inv(X.T@(w[:,None]*X))
+            h = w*np.einsum('ij,jk,ik->i', X, final_Iinv, X)
+            if np.max(np.abs(X.T@(y-p+h*(.5-p)))) > 1e-7:
+                raise RuntimeError("Firth adjusted score did not converge")
+            return b, final_Iinv
+    raise RuntimeError("Firth demonstration reached its iteration limit without convergence")
 
 print("\n== Firth on example B ==")
 bF, IinvF = firth(X, yB)

@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('22')
 # Experiment M22; independent synthetic method demonstration, not main case A.
 import numpy as np, warnings
@@ -54,6 +54,7 @@ def fit_logit(X, y, it=50, ridge=0.0):
         step = np.linalg.solve(H, X.T@(y-p) - ridge*b)
         b = b + step
         if np.max(np.abs(step))<1e-10: break
+    check_logistic_solution(X, y, b, ridge=ridge)
     return b
 def loglik(b,X,y):
     eta=X@b; return np.sum(y*eta-np.log1p(np.exp(eta)))

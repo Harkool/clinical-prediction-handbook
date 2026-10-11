@@ -14,26 +14,7 @@ import sys
 import time
 
 ROOT = Path(os.path.abspath(__file__)).parent
-VERSION = "1.0.0"
-
-
-def rscript_path(explicit=None):
-    """Honor an explicit choice, then PATH, then standard Windows install dirs."""
-    choice = explicit or os.environ.get("RSCRIPT") or shutil.which("Rscript")
-    if choice:
-        resolved = shutil.which(choice) or choice
-        if Path(resolved).is_file():
-            return os.path.abspath(resolved)
-        raise ValueError("Rscript 路径不存在: " + choice)
-    if os.name == "nt":
-        candidates = []
-        for base in (Path(os.environ.get("LOCALAPPDATA", "")) / "Programs" / "R",
-                     Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "R"):
-            candidates.extend(base.glob("R-*/bin/Rscript.exe"))
-        if candidates:
-            return str(sorted(candidates, key=lambda p: tuple(
-                int(x) for x in p.parts[-3][2:].split(".") if x.isdigit()))[-1])
-    raise ValueError("未找到 Rscript。安装 R 后加入 PATH，或传 --rscript 完整路径。")
+VERSION = "2.0.0"
 
 
 def output_dir(mode):
@@ -68,35 +49,31 @@ def doctor(args):
     ok = sys.version_info >= (3, 9)
     if not ok:
         print("需要 Python >= 3.9")
-    try:
-        r = rscript_path(args.rscript)
-        check = subprocess.run([r, "--vanilla", "-e",
-            'cat(R.version.string,"\\n"); stopifnot(getRversion()>="4.3.0"); '
-            'stopifnot(requireNamespace("survival",quietly=TRUE),'
-            'requireNamespace("splines",quietly=TRUE)); cat("R baseline: PASS\\n")'],
-            capture_output=True, text=True, encoding="utf-8", errors="replace")
-        print("Rscript:", r)
-        print(check.stdout.strip())
-        if check.returncode:
-            print(check.stderr.strip())
-            ok = False
-    except ValueError as exc:
-        print(exc)
-        ok = False
-    for name in ("numpy", "scipy", "sklearn"):
-        print("数学依赖 %s: %s" % (name, "已安装" if importlib.util.find_spec(name)
-              else "缺少；python -m pip install -r requirements.txt"))
+    for name in ("numpy", "scipy", "sklearn", "matplotlib"):
+        installed = importlib.util.find_spec(name) is not None
+        print("Python 依赖 %s: %s" % (name, "已安装" if installed else "缺少；python -m pip install -r requirements.txt"))
+        ok = ok and installed
     print("输出:", ROOT / "outputs")
     return 0 if ok else 1
 
 
-def run_r(chapter, args):
+def run_course_cli(chapter, args):
     out = output_dir(args.mode)
-    r = rscript_path(args.rscript)
-    execute([r, "--vanilla", str(ROOT / "R" / "lesson_cli.R"),
-             "--chapter", str(chapter), "--output", str(out), "--mode", args.mode],
-            ROOT, out / "logs" / ("course.log" if chapter == "all"
-                                    else "chapter_%02d.log" % int(chapter)), args.mode)
+    report = out / "course_execution.json"
+    record = {"chapter": str(chapter), "mode": args.mode, "status": "RUNNING"}
+    report.write_text(json.dumps(record)+"\n", encoding="utf-8")
+    (out / "verification.json").write_text('{"status":"STALE","reason":"Python course started; rerun verify after completion"}\n', encoding="utf-8")
+    try:
+        execute([sys.executable, str(ROOT / "examples" / "course_cli.py"),
+                 "--chapter", str(chapter), "--output", str(out), "--mode", args.mode],
+                ROOT, out / "logs" / ("course.log" if chapter == "all"
+                                        else "chapter_%02d.log" % int(chapter)), args.mode)
+        record["status"] = "PASS_EXECUTED"
+    except Exception as exc:
+        record.update(status="FAIL", error=str(exc))
+        raise
+    finally:
+        report.write_text(json.dumps(record, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
 
 
 def run_math(lab, args):
@@ -170,6 +147,30 @@ TERMS = ["(Intercept)", "age_linear", "age_rcs1", "age_rcs2", "bmi", "male",
 
 
 def verify_output(out):
+    # Verify freshness separately from numerical agreement. Single-chapter
+    # readers need not run all 20 lessons, but older evidence must not look new.
+    execution = out / "course_execution.json"
+    if execution.exists() and json.loads(execution.read_text(encoding="utf-8")).get("status") != "PASS_EXECUTED":
+        raise ValueError("最近 Python 课程运行未成功完成；修复并重跑后再验证")
+    manifest_path = out / "manifest.csv"
+    source_path = out / "results/context_sources.csv"
+    completed_chapters = []
+    if manifest_path.exists():
+        records = read_csv(manifest_path)
+        completed_chapters = [int(row["chapter"]) for row in records]
+        if (not records or len(set(completed_chapters)) != len(records) or
+                any(chapter not in range(1, 21) for chapter in completed_chapters) or
+                any(row["status"] != "PASS_EXECUTED" for row in records)):
+            raise ValueError("章节记录含 STALE/FAIL/RUNNING 或非法编号；须重跑对应章节")
+        if not source_path.exists():
+            raise ValueError("旧产物缺少代码来源记录；请重跑已执行章节")
+    if source_path.exists():
+        sources = read_csv(source_path)
+        expected = {"course_core.py", "course_validation.py", "course.py", "metrics.py", "preprocessing.py", "validation.py", "predictions.py", "baseline.py"}
+        if len(sources) != len(expected) or {row["file"] for row in sources} != expected:
+            raise ValueError("代码来源记录缺项或重复")
+        if any(hashlib.sha256((ROOT/"cph"/row["file"]).read_bytes()).hexdigest() != row["sha256"] for row in sources):
+            raise ValueError("Python 源码已改变，旧产物须重跑后再验证")
     required = [out / "data/main_case.csv", out / "results/model_coefficients.csv",
                 out / "results/predictions.csv", out / "results/apparent_metrics.csv"]
     missing = [str(p) for p in required if not p.is_file()]
@@ -184,7 +185,7 @@ def verify_output(out):
     if len(data) != 3200 or len(predictions) != len(data):
         raise ValueError("教学队列必须有 3200 行且预测行数相同")
     ids = [r["id"] for r in data]
-    if len(set(ids)) != len(ids) or ids != [r["id"] for r in predictions]:
+    if any(not value.strip() for value in ids) or len(set(ids)) != len(ids) or ids != [r["id"] for r in predictions]:
         raise ValueError("患者 ID 重复或预测与输入的行顺序不一致")
     errors, y, p = [], [], []
     for row, saved in zip(data, predictions):
@@ -226,7 +227,8 @@ def verify_output(out):
             raise ValueError("导出指标包含非有限值")
         if abs(metrics["C"]-auc) > 1e-10 or abs(metrics["Brier"]-brier) > 1e-10:
             raise ValueError("导出的性能指标与独立重算不一致")
-    return {"status": "PASS", "scope": "frozen case A coefficients/predictions/apparent metrics",
+    return {"status": "PASS", "scope": "frozen case A predictions and independently recomputed apparent C/Brier",
+            "completed_case_chapters": sorted(completed_chapters),
             "n": len(data), "events": events, "max_prediction_error": max(errors),
             "C": auc, "Brier": brier,
             "input_sha256": {path.relative_to(out).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
@@ -237,8 +239,16 @@ def verify_output(out):
 def parser():
     p = argparse.ArgumentParser(description="书籍逐章实操入口")
     subs = p.add_subparsers(dest="command", required=True)
-    d = subs.add_parser("doctor", help="检查 R/Python 环境")
-    d.add_argument("--rscript")
+    subs.add_parser("doctor", help="检查纯 Python 环境")
+    baseline = subs.add_parser("baseline", help="生成可配置的基线表 Table 1（无需额外 Python 包）")
+    baseline.add_argument("--mode", choices=("quick", "book"), default="quick")
+    baseline.add_argument("--input", help="CSV 路径；默认使用本模式 main_case.csv")
+    baseline.add_argument("--schema", help="JSON 变量与分组声明；默认 templates/table1_schema.json")
+    baseline.add_argument("--output", help="输出目录；默认 outputs/<mode>/baseline")
+    toolkit = subs.add_parser("toolkit", help="运行拆分后的 Python 分析工具箱示例")
+    toolkit.add_argument("--mode", choices=("quick", "book"), default="quick")
+    foundations = subs.add_parser("foundations", help="运行独立线性代数基础小例")
+    foundations.add_argument("--mode", choices=("quick", "book"), default="quick")
     for name in ("chapter", "course", "math", "verify"):
         sub = subs.add_parser(name)
         if name == "chapter":
@@ -246,8 +256,6 @@ def parser():
         if name == "math":
             sub.add_argument("lab", help="21—31、24b 等，或 all")
         sub.add_argument("--mode", choices=("quick", "book"), default="quick")
-        if name in ("chapter", "course"):
-            sub.add_argument("--rscript", help="Rscript 的完整路径，也可设 RSCRIPT")
     return p
 
 
@@ -256,11 +264,27 @@ def main(argv=None):
     try:
         if args.command == "doctor":
             return doctor(args)
-        if args.command == "course":
-            run_r("all", args)
+        if args.command == "baseline":
+            from cph.baseline import generate_baseline
+            out = output_dir(args.mode)
+            result = generate_baseline(Path(args.input) if args.input else out/"data/main_case.csv",
+                         Path(args.schema) if args.schema else ROOT/"templates/table1_schema.json",
+                         Path(args.output) if args.output else out/"baseline")
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == "foundations":
+            from cph.foundations import run_foundations
+            print(json.dumps(run_foundations(output_dir(args.mode)/"foundations"), indent=2))
+        elif args.command == "toolkit":
+            missing = [name for name in ("numpy", "scipy", "sklearn", "pandas", "matplotlib") if not importlib.util.find_spec(name)]
+            if missing:
+                raise ValueError("缺少工具箱依赖 %s；运行 python -m pip install -r requirements-toolkit.txt" % ", ".join(missing))
+            execute([sys.executable, str(ROOT/"examples/toolkit_demo.py"), "--mode", args.mode],
+                    ROOT, output_dir(args.mode)/"logs/toolkit.log", args.mode)
+        elif args.command == "course":
+            run_course_cli("all", args)
         elif args.command == "chapter":
             if args.chapter <= 20:
-                run_r(args.chapter, args)
+                run_course_cli(args.chapter, args)
             else:
                 run_math(str(args.chapter), args)
         elif args.command == "math":

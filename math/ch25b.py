@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('25b')
 # Experiment M25b; independent synthetic method demonstration, not main case A.
 import numpy as np, warnings
@@ -31,6 +31,7 @@ def fit_logit(X,y,it=60):
         p=sigmoid(X@b); w=np.maximum(p*(1-p),1e-9)
         step=np.linalg.solve(X.T@(w[:,None]*X)+1e-8*np.eye(X.shape[1]), X.T@(y-p)); b+=step
         if np.max(np.abs(step))<1e-9: break
+    check_logistic_solution(X, y, b)
     return b
 def slope(p,y):
     p=np.clip(p,1e-6,1-1e-6); lp=np.log(p/(1-p)); return fit_logit(np.c_[np.ones(len(lp)),lp],y)[1]

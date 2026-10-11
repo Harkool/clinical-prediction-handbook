@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('31')
 # Experiment M31; independent synthetic method demonstration, not main case A.
 # ch31.py —— 第31章 数值小例：采样、处理与反事实预测
@@ -37,6 +37,7 @@ def irls(X, y, sw=None, offset=None, iters=40):
         if np.max(np.abs(bn - b)) < 1e-9:
             b = bn; break
         b = bn
+    check_logistic_solution(X, y, b, offset=off, sample_weight=sw)
     return b
 
 

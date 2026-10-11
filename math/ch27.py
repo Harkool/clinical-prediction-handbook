@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('27')
 # Experiment M27; independent synthetic method demonstration, not main case A.
 # ch27.py —— 第27章 数值小例：评价指标的数学
@@ -37,6 +37,7 @@ def irls_logit(X, y, offset=None, iters=30):
             b = b_new
             break
         b = b_new
+    check_logistic_solution(X, y, b, offset=off)
     return b
 
 

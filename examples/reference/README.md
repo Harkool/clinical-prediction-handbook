@@ -1,22 +1,33 @@
-# 原书合成病例 A 的参考结果
+# 冻结病例 A 与历史数值参考
 
-这些文件来自 2026-10-11 第二次修订版实操册已执行的合成病例 A，不是读者本次运行的结果。3200 行、384 个复合结局事件，其中 39 例 CD V 死亡；14 个输入、18 个待估参数。生成种子为 20261010，R 4.6.1。
+`main_case.csv` 是原书合成病例 A 的冻结输入：3200 行、25 列、384 个复合结局事件，其中 39 例 CD V 死亡。主线使用 14 个输入、18 个待估参数，含截距共 19 个系数。输入保留历史生成值，去除了生成器的理想风险答案列 `true_risk`；它不是临床数据。
 
-完整预算为开发 bootstrap 200 次、固定模型评价 500 次、校准开发 200 次 / 条件重抽样 500 次、双重 bootstrap 200 × 50、亚组 300 次。核心模型系数和逐人预测可用于代码移植的一致性检查；小预算重抽样不应逐项等于这些完整预算结果。
+v2 的纯 Python 课程直接读取这份输入。原书历史生成种子为 20261010；Python 新增验证数据与重抽样使用独立的 NumPy PCG64 随机流，无需仿制历史生成器。
 
-|文件|解释|
+|文件|用途|
 |---|---|
-|`model_coefficients.csv`、`predictions.csv`|冻结病例 A 的 19 个系数（含截距）及 3200 行预测|
-|`model_payload.txt`、`model_identity.txt`|完整预测规则的规范化载荷与 MD5 一致性标识；不是签名或安全校验机制|
-|`apparent_metrics.csv`|原开发样本上的表观指标|
-|`bootstrap_optimism.csv`|固定候选开发流程的内部乐观偏倚校正|
-|`development_intervals.csv`|内部校正开发统计量的双重 bootstrap 经验分位数范围|
-|`calibration_curve.csv`、`calibration.png`|校正平滑曲线没有区间；条件带属于固定模型的表观曲线|
-|`calibration_groups.csv`、`calibration_recipe.csv`|事先固定的分组与平滑规格；分组区间为描述性 Wilson 区间|
-|`dca.csv`|事先教学阈值的内部校正净获益，没有获批的临床行动|
-|`subgroups.csv`|描述性亚组指标；不作亚组优势证明|
-|`gate_status.csv`、`gate_scope_status.csv`|原书产物的限定自动检查状态，不能复制为读者的审核记录|
+|`main_case.csv`|读者课程的冻结主线输入|
+|`model_coefficients.csv`、`predictions.csv`|历史模型的 19 个系数及 3200 行预测，供数值移植核对|
+|`apparent_metrics.csv`|历史开发样本的表观指标|
+|`bootstrap_optimism.csv`、`development_intervals.csv`|历史内部校正与双重 bootstrap 经验分位数范围|
+|`calibration_curve.csv`、`calibration.png`|历史校正平滑曲线与固定模型表观曲线的条件逐点带|
+|`calibration_groups.csv`、`calibration_recipe.csv`|历史分组与平滑规格；Wilson 分组区间为描述性区间|
+|`dca.csv`、`subgroups.csv`|历史教学阈值净获益与描述性亚组指标|
+|`gate_status.csv`、`gate_scope_status.csv`|历史产物的限定检查状态，不能复制为读者审核结果|
 
-运行 `python run.py chapter 08 --mode book` 会重新生成同一病例，再用 `python run.py verify --mode book` 独立重算本次导出的预测与表观指标。各文件字节摘要见 `checksums.sha256`。CSV 换行、数字格式或软件版本变化可能改变文件摘要；数值比较需先核对同一数据、规则、随机种子和预算。
+历史重抽样预算为开发 200、固定评价 500、校准 200/500、双重 bootstrap 200 × 50、亚组 300。它们保留作历史对照；当前 Python 随机流及较小 quick 预算不应逐项等于这些数值。
 
-全部为作者生成的合成教学产物，按仓库 MIT 使用。书稿与 PDF 未包含在这些文件中。
+2026-10-11 的 Python 固定主线拟合与历史参考相比，系数最大绝对差为 `1.4707823847714963e-10`，预测最大绝对差为 `7.190983919436178e-12`。当前模型的完整规则和 SHA-256 身份写入读者运行目录的模型 JSON；历史文本身份文件已不再发布。
+
+运行：
+
+```sh
+python run.py chapter 08 --mode book
+python run.py verify --mode book
+```
+
+这会读取冻结输入，输出当前 Python 结果，再独立重算预测与表观 C/Brier。完整课程用 `python run.py course --mode book`。数值一致性与章节执行覆盖分别记录；参考目录不充当本次运行缓存。
+
+本目录各文件的字节摘要见 [checksums.sha256](checksums.sha256)。摘要可以检查下载完整性，换行或数字格式变化也会改变摘要。比较数值前应核对输入、预测规则、评价目标、随机流和预算。
+
+这些作者生成的合成教学数据与数值参考按仓库 MIT 使用；书稿和 PDF 未包含在本目录。当前验证范围见 [validation.md](../../docs/validation.md)。

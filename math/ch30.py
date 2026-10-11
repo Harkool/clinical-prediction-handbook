@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('30')
 # Experiment M30; independent synthetic method demonstration, not main case A.
 # ch30.py —— 第30章 数值小例：样本量公式
@@ -177,6 +177,7 @@ def irls_s(X, y, iters=25):
         if np.max(np.abs(bn - b)) < 1e-9:
             b = bn; break
         b = bn
+    check_logistic_solution(X, y, b)
     return b
 def auc_s(y, sc):
     from scipy.stats import rankdata
@@ -223,6 +224,7 @@ def irls(X, y, iters=30):
         if np.max(np.abs(bn - b)) < 1e-9:
             b = bn; break
         b = bn
+    check_logistic_solution(X, y, b)
     return b
 
 print(f"{'C':>5}{'n取法':>10}{'n':>7}{'事件':>6}{'EPP':>6}{'平均斜率':>9}{'斜率SD':>8}{'<0.9 的比例':>11}{'MAPE':>8}")

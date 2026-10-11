@@ -1,4 +1,4 @@
-from _lab_support import begin, budget, write_result
+from _lab_support import begin, budget, write_result, check_logistic_solution
 LAB_MODE = begin('23')
 # Experiment M23; independent synthetic method demonstration, not main case A.
 import numpy as np, warnings
@@ -118,6 +118,7 @@ def fit_logit(X, y, it=100):
         p = sigmoid(X@b); w = p*(1-p)
         step = np.linalg.solve(X.T@(w[:,None]*X)+1e-10*np.eye(X.shape[1]), X.T@(y-p)); b+=step
         if np.max(np.abs(step))<1e-10: break
+    check_logistic_solution(X, y, b)
     return b
 def ll(b,X,y):
     e=X@b; return np.sum(y*e-np.log1p(np.exp(e)))

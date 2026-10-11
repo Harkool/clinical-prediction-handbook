@@ -1,51 +1,574 @@
 {
+  "format": "python-release-validation-v2",
   "date": "2026-10-11",
-  "implementation_commit": "3f90562a921d4aca46b32709afff84e84568148c",
-  "R": "4.6.1",
-  "Python": "3.9.20",
-  "r_chapters_quick": 20,
-  "r_chapters_book": 20,
-  "r_semantic_checks": 20,
-  "python_tests": 15,
-  "mathematical_scripts_each_mode": 16,
-  "mathematical_checks_each_mode": 47,
-  "fresh_public_clone": "PASS",
-  "reference_comparison": {
-    "bootstrap_optimism.csv": {
-      "rows": 5,
-      "max_numeric_difference": 0.0
+  "implementation_commit": null,
+  "implementation": "pure Python",
+  "platform": "Windows",
+  "environment": {
+    "Python": "3.9.20",
+    "matplotlib": "3.9.4",
+    "numpy": "2.0.2",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.13.1"
+  },
+  "unit_tests": {
+    "status": "PASS",
+    "tests": 103,
+    "seconds": 12.98,
+    "evidence": {
+      "path": "outputs/release-validation/unittest.log",
+      "sha256": "55620220818afd30511e0d38c94b26af1d9e63782047a629dca70e6d6b3b6ba7"
+    }
+  },
+  "course": {
+    "quick": {
+      "status": "PASS_EXECUTED",
+      "chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "source_signature": "3d2314480dc112cdfd62264578150fef145e9c71fc7d41c3067bb2a76d3ed2f5",
+      "source_hashes": {
+        "cph/__init__.py": "a461a4663e344afe3f3356038ad83f0b6f5f48dbb3808ab8ee7a981f53764229",
+        "cph/baseline.py": "73e9bfe178c09052659276ffb1951b0074756b08cdafb65ef4ba052e482c7cb4",
+        "cph/course.py": "b28512857c57cad51dcf8a11cfe1dbd86022a58f770ba8e62abdcfaaf598eebb",
+        "cph/course_core.py": "6982443b821c620fba23ba8ec5eacae5bd98cba13adee1523348ae262e6620ac",
+        "cph/course_validation.py": "a8aeaa4a69c8396cdf9a95e7374ee90c0173779e91ed2fa4a8cec5bc07da8d2d",
+        "cph/foundations.py": "95da2590371d666f85f227035e87a0b8e94d1e9b3ac61c418ea2884ebef76bef",
+        "cph/metrics.py": "f65e6aea1c5f361ae613ef8d18c30e4f333c97079a99b84393f04fc9f029e04b",
+        "cph/plots.py": "d6942396796ca49a540fe4d0da0d71ba85dbd7088d8a476f0120f77870c60313",
+        "cph/predictions.py": "02a01edba0b2078e1a73f29357160e4106243825804178ac4f9264b6a4b670a3",
+        "cph/preprocessing.py": "b173cf5c3396edc0a8230e8af144e1522122eac93c19697e8071f7923fdd45e4",
+        "cph/validation.py": "4f054270a63387b4b3212d60e36ed950bb27f7533cca7421d7621a68ea5927f3",
+        "examples/reference/main_case.csv": "5af2de5ee5fc3e6c62aaa9ce9bf39db63074179e9dc2a315a934361e9c619e55",
+        "run.py": "9a4ebbf8e1174523e6d2b855fe0d5d3a2b671855e4aca620025524e81b655c42"
+      },
+      "budget": {
+        "conditional": 40,
+        "curve": 20,
+        "curve_conditional": 40,
+        "development": 20,
+        "inner": 10,
+        "outer": 10,
+        "subgroup": 40
+      },
+      "resampling_rng": "NumPy PCG64; distinct from original R RNG",
+      "fixed_interval_valid_replicates_per_metric": 40,
+      "fixed_interval_failed_replicates_per_metric": 0,
+      "calibration_valid_replicates": 60,
+      "calibration_curve_points": 80,
+      "independent_verification": {
+        "status": "PASS",
+        "scope": "frozen case A predictions and independently recomputed apparent C/Brier",
+        "completed_case_chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "n": 3200,
+        "events": 384,
+        "max_prediction_error": 3.3306690738754696e-16,
+        "C": 0.7712383848248106,
+        "Brier": 0.09069047612870058,
+        "input_sha256": {
+          "data/main_case.csv": "161916ae6239ee5f6bbffb108c366aaa5fe96c57b490b831e3484310d01d8ad3",
+          "results/model_coefficients.csv": "ca56c32e3ce69d6bfdf8b8b844f55c359e758007693fcc332231d96d6a334317",
+          "results/predictions.csv": "50d648b7b8fe8526b4797593451c1a5723a3460d0c18987762e21614ebd0be9e",
+          "results/apparent_metrics.csv": "fb2b7d02186b24d890dae6053914beb679773e886d243b4c0acdfeeea7323ab8"
+        },
+        "note": "一致性验证不代表临床有效性；区间与门禁另见各章产物。",
+        "mode": "quick"
+      },
+      "evidence": [
+        {
+          "path": "outputs/quick/manifest.csv",
+          "sha256": "4b5b94da922592da5e5c7c38668116ae652cd1293ad034f069523587e9d309dd"
+        },
+        {
+          "path": "outputs/quick/source_signature.json",
+          "sha256": "5e7410c4f14b8cbf925baab113eec1aea1f116b19ff8b62eeaa4f64d092f10a9"
+        },
+        {
+          "path": "outputs/quick/verification.json",
+          "sha256": "f42dae7ad5f4a9bfeb7a3d3fed42f83e904c4a8ca27fe9fe8cf30c9586aa1819"
+        },
+        {
+          "path": "outputs/quick/results/calibration_log.csv",
+          "sha256": "1f6b54ceb6ed4f9e0daa563f38decdfe14b984a3b8eb19d07fbd5933b83c947c"
+        },
+        {
+          "path": "outputs/quick/results/fixed_model_intervals.csv",
+          "sha256": "765f2e54d125b0bf547cbefee95b91af3da1d8520a11be22b55c271cca0081e5"
+        },
+        {
+          "path": "outputs/quick/results/development_intervals.csv",
+          "sha256": "232a66daa3cfded7c707311d1f73bfb1625c19dbe85dccb226569e7a046afd00"
+        }
+      ]
     },
-    "development_intervals.csv": {
-      "rows": 5,
-      "max_numeric_difference": 0.0
-    },
-    "calibration_curve.csv": {
-      "rows": 80,
-      "max_numeric_difference": 0.0
-    },
-    "calibration_groups.csv": {
-      "rows": 7,
-      "max_numeric_difference": 0.0
-    },
-    "calibration_recipe.csv": {
-      "rows": 12,
-      "max_numeric_difference": 0.0
+    "book": {
+      "status": "PASS_EXECUTED",
+      "chapters": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "source_signature": "d8826316a197a00941e3b59b3bee404b42ddb0336bc0cb48bc1b888a338319d9",
+      "source_hashes": {
+        "cph/__init__.py": "a461a4663e344afe3f3356038ad83f0b6f5f48dbb3808ab8ee7a981f53764229",
+        "cph/baseline.py": "73e9bfe178c09052659276ffb1951b0074756b08cdafb65ef4ba052e482c7cb4",
+        "cph/course.py": "b28512857c57cad51dcf8a11cfe1dbd86022a58f770ba8e62abdcfaaf598eebb",
+        "cph/course_core.py": "6982443b821c620fba23ba8ec5eacae5bd98cba13adee1523348ae262e6620ac",
+        "cph/course_validation.py": "a8aeaa4a69c8396cdf9a95e7374ee90c0173779e91ed2fa4a8cec5bc07da8d2d",
+        "cph/foundations.py": "95da2590371d666f85f227035e87a0b8e94d1e9b3ac61c418ea2884ebef76bef",
+        "cph/metrics.py": "f65e6aea1c5f361ae613ef8d18c30e4f333c97079a99b84393f04fc9f029e04b",
+        "cph/plots.py": "d6942396796ca49a540fe4d0da0d71ba85dbd7088d8a476f0120f77870c60313",
+        "cph/predictions.py": "02a01edba0b2078e1a73f29357160e4106243825804178ac4f9264b6a4b670a3",
+        "cph/preprocessing.py": "b173cf5c3396edc0a8230e8af144e1522122eac93c19697e8071f7923fdd45e4",
+        "cph/validation.py": "4f054270a63387b4b3212d60e36ed950bb27f7533cca7421d7621a68ea5927f3",
+        "examples/reference/main_case.csv": "5af2de5ee5fc3e6c62aaa9ce9bf39db63074179e9dc2a315a934361e9c619e55",
+        "run.py": "9a4ebbf8e1174523e6d2b855fe0d5d3a2b671855e4aca620025524e81b655c42"
+      },
+      "budget": {
+        "conditional": 500,
+        "curve": 200,
+        "curve_conditional": 500,
+        "development": 200,
+        "inner": 50,
+        "outer": 200,
+        "subgroup": 300
+      },
+      "resampling_rng": "NumPy PCG64; distinct from original R RNG",
+      "fixed_interval_valid_replicates_per_metric": 500,
+      "fixed_interval_failed_replicates_per_metric": 0,
+      "calibration_valid_replicates": 700,
+      "calibration_curve_points": 80,
+      "independent_verification": {
+        "status": "PASS",
+        "scope": "frozen case A predictions and independently recomputed apparent C/Brier",
+        "completed_case_chapters": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "n": 3200,
+        "events": 384,
+        "max_prediction_error": 3.3306690738754696e-16,
+        "C": 0.7712383848248106,
+        "Brier": 0.09069047612870058,
+        "input_sha256": {
+          "data/main_case.csv": "161916ae6239ee5f6bbffb108c366aaa5fe96c57b490b831e3484310d01d8ad3",
+          "results/model_coefficients.csv": "ca56c32e3ce69d6bfdf8b8b844f55c359e758007693fcc332231d96d6a334317",
+          "results/predictions.csv": "50d648b7b8fe8526b4797593451c1a5723a3460d0c18987762e21614ebd0be9e",
+          "results/apparent_metrics.csv": "fb2b7d02186b24d890dae6053914beb679773e886d243b4c0acdfeeea7323ab8"
+        },
+        "note": "一致性验证不代表临床有效性；区间与门禁另见各章产物。",
+        "mode": "book"
+      },
+      "evidence": [
+        {
+          "path": "outputs/book/manifest.csv",
+          "sha256": "9470aa5e36d18d04c63f7a3eb69866144763ba2fc999e0f98ecfd6af57d3408a"
+        },
+        {
+          "path": "outputs/book/source_signature.json",
+          "sha256": "9ca2816490c756cb7a7d4ff68e654ae7164d6cf778a4e317b7be71364f8f53b0"
+        },
+        {
+          "path": "outputs/book/verification.json",
+          "sha256": "74a714853bebb69c9a1e581538059b2860e062d58a20df5cb0c103f40a660fff"
+        },
+        {
+          "path": "outputs/book/results/calibration_log.csv",
+          "sha256": "0703bca069251f93c046588f89ee3fc0de6d448e522f9752fd1617c7b9360a0d"
+        },
+        {
+          "path": "outputs/book/results/fixed_model_intervals.csv",
+          "sha256": "ea409d595c4f901deb0d3ed437dc2125b1fb284c51aabc1abeb32c183973b2b1"
+        },
+        {
+          "path": "outputs/book/results/development_intervals.csv",
+          "sha256": "8e4b7d9e2ac49973db4744303fcb0ec62be07e7e93978f878b8b1f490c493b37"
+        }
+      ]
+    }
+  },
+  "frozen_case": {
+    "path": "examples/reference/main_case.csv",
+    "sha256": "5af2de5ee5fc3e6c62aaa9ce9bf39db63074179e9dc2a315a934361e9c619e55",
+    "n": 3200,
+    "columns": 25,
+    "events": 384,
+    "cd_v_deaths": 39,
+    "predictor_inputs": 14,
+    "estimated_parameters_excluding_intercept": 18,
+    "design_columns_including_intercept": 19,
+    "removed_generator_answer_column": "true_risk",
+    "generation": "historical frozen synthetic input; no Python regeneration claim"
+  },
+  "historical_reference_comparison": {
+    "model_coefficients.csv": {
+      "rows": 19,
+      "matched_by": "term",
+      "max_absolute_difference": 1.4707823847714963e-10
     },
     "predictions.csv": {
       "rows": 3200,
-      "max_numeric_difference": 0.0
+      "matched_by": "id",
+      "max_absolute_difference": 7.190983919436178e-12
     },
-    "model_coefficients.csv": {
-      "rows": 19,
-      "max_numeric_difference": 0.0
+    "scope": "frozen coefficients and predictions only; PCG64 resampling outputs are not asserted identical to historical random-stream outputs"
+  },
+  "mathematical_labs": {
+    "quick": {
+      "status": "PASS",
+      "scripts": 16,
+      "numerical_checks": 48,
+      "results": [
+        {
+          "id": "21",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "19d1de0dab85b3b59bd75b419fd5349d653c4136a15434c83af2e1f8b4879a8b",
+          "evidence": {
+            "path": "outputs/quick/math/21/result.json",
+            "sha256": "b1537e40cd6c88abac7e40ce9ad6d39d41f765c5aed4859b3eef6aae73e4cd8a"
+          }
+        },
+        {
+          "id": "22",
+          "status": "PASS",
+          "checks": 2,
+          "script_sha256": "3515fdfcd9ce1727b85c362804ed16fce540f85063dcb29fd516f46e3c3b65aa",
+          "evidence": {
+            "path": "outputs/quick/math/22/result.json",
+            "sha256": "558b3c4c8fdb5365843259124f26286309e6120522b447c27e37fb1ae3b6b5c7"
+          }
+        },
+        {
+          "id": "22b",
+          "status": "PASS",
+          "checks": 2,
+          "script_sha256": "19db6bc3826654ec26194c84b637338eb2aaba73dfb7ace592eaaf780bc4ba41",
+          "evidence": {
+            "path": "outputs/quick/math/22b/result.json",
+            "sha256": "47c71b8d6440307cec5597e86f33eec51513b59ee8f38685ff5cfd339aecc5d2"
+          }
+        },
+        {
+          "id": "23",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "215ade4f5a56aa55463594174b32e93995c3faa3a370199608834a5a8adadeba",
+          "evidence": {
+            "path": "outputs/quick/math/23/result.json",
+            "sha256": "63317444bd85c0eff9023acf62e541cdf16b41ad6d52d34bed165d60520df99a"
+          }
+        },
+        {
+          "id": "24",
+          "status": "PASS",
+          "checks": 4,
+          "script_sha256": "6cea9d677c1ce4dfea6c5e1d7af2792b218a75bd4433682483b3c2868bbee488",
+          "evidence": {
+            "path": "outputs/quick/math/24/result.json",
+            "sha256": "87c752064fab3f9f4ea116a0b4455a7efee4a998fea32a0479482cc5d59a2e03"
+          }
+        },
+        {
+          "id": "24b",
+          "status": "PASS",
+          "checks": 4,
+          "script_sha256": "8f7a5fcfc2b940ea5767a43688c1da1aa086e5ebed2eafc6eda0da2726259bda",
+          "evidence": {
+            "path": "outputs/quick/math/24b/result.json",
+            "sha256": "83419c78189162a6988b900debbe10e444449f8939e344ef61ec428917eb28c3"
+          }
+        },
+        {
+          "id": "25",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "8788ad894e4c0e7599d7402ee8de3883e79f77dc03556f3b14852bb1ecfe8c4a",
+          "evidence": {
+            "path": "outputs/quick/math/25/result.json",
+            "sha256": "18381a42d8058e9c55eaeefb7c138a12f40159828a012d953e185659ac492eac"
+          }
+        },
+        {
+          "id": "25b",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "b024f60d216e6ae5ad4a29f22ed917dd38f61356eda9281f69374af594d6e800",
+          "evidence": {
+            "path": "outputs/quick/math/25b/result.json",
+            "sha256": "9cfeec87eb40bf0da2dada54a6830e85e57e07b1127ad6de8aa303b3e39c72ca"
+          }
+        },
+        {
+          "id": "26",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "18c5a4ee7d118bf56cfe10edd3c8c6b54ec302997abd10b3ff7588d3c01e2161",
+          "evidence": {
+            "path": "outputs/quick/math/26/result.json",
+            "sha256": "b2cc56516782582a13b43314d4f26c640043d9621ca8f55e0d6b9ae89293291e"
+          }
+        },
+        {
+          "id": "26b",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "7a0fbc1bfc1b27bc1671bd855a535e8f3cd1a9d19d8fdcd829376f04a0599467",
+          "evidence": {
+            "path": "outputs/quick/math/26b/result.json",
+            "sha256": "157ae037681a213e3979a9e8edd87cc39e17fbb791ba01094b6faae8285726d1"
+          }
+        },
+        {
+          "id": "27",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "fb3eb6e077eb6de8dd08be392c3c18388ed54ae9bb045ad663396ec417681f29",
+          "evidence": {
+            "path": "outputs/quick/math/27/result.json",
+            "sha256": "ab22da7661982ee3db783803b5051a37b0e34c144e6ad385b713e845fb1e88dd"
+          }
+        },
+        {
+          "id": "28",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "865bd330db680ba0a0d62190943b1edaf7b85684bacd0da0762eeccb7763e2e0",
+          "evidence": {
+            "path": "outputs/quick/math/28/result.json",
+            "sha256": "4274be73cc1ceab14f210960fd6aa61996bb044b43d899ef56ea6e8e2333440c"
+          }
+        },
+        {
+          "id": "29",
+          "status": "PASS",
+          "checks": 2,
+          "script_sha256": "9983bd708c8d6b531def7800f565062d749d56a2803344cdb0d72bc36302f29e",
+          "evidence": {
+            "path": "outputs/quick/math/29/result.json",
+            "sha256": "c0931ac4e1b1eb8702f645c0358f8b5c551ce23b9c87068fc2c0d331f8a1c502"
+          }
+        },
+        {
+          "id": "30",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "28b8a676e7f1118b0b5efecb6ebc892ba47d45d6ac475f61ce6e8fe8814f73ae",
+          "evidence": {
+            "path": "outputs/quick/math/30/result.json",
+            "sha256": "9bad8ddda7fd38ae9d7f103513b3a6b448afb3d20e04413e7e28f871a4951ef2"
+          }
+        },
+        {
+          "id": "31",
+          "status": "PASS",
+          "checks": 3,
+          "script_sha256": "bd669ce27fc420e996f14575e7e96fa721bce1bd2666d4784f0408a22e84c5b9",
+          "evidence": {
+            "path": "outputs/quick/math/31/result.json",
+            "sha256": "34069e6305bcdbc5942a96e2f160e56573cda08573496759cc5fa9da826c0402"
+          }
+        },
+        {
+          "id": "31b",
+          "status": "PASS",
+          "checks": 4,
+          "script_sha256": "331691d2795128b0b1f156041303ad845038fd0b083f35dfb28acce0e8ebd527",
+          "evidence": {
+            "path": "outputs/quick/math/31b/result.json",
+            "sha256": "8fdfa16501b518cfe49534480b59d27f706fa5349582fecec8b333f44b31c9b5"
+          }
+        }
+      ]
+    },
+    "current_book_rerun": {
+      "id": "26b",
+      "status": "PASS",
+      "numerical_checks": 3,
+      "grid_fits": 200,
+      "budgets": {
+        "test_n": {
+          "book": 40000,
+          "quick": 5000,
+          "actual": 40000
+        },
+        "development_repetitions": {
+          "book": 20,
+          "quick": 3,
+          "actual": 20
+        },
+        "mlp_initial_max_iter": {
+          "book": 3000,
+          "quick": 3000,
+          "actual": 3000
+        },
+        "mlp_retry_max_iter": {
+          "book": 10000,
+          "quick": 10000,
+          "actual": 10000
+        },
+        "mlp_retry_max_fun": {
+          "book": 50000,
+          "quick": 50000,
+          "actual": 50000
+        }
+      },
+      "undefined_calibration_slopes": "explicit null; no estimate from constant or near-constant predictions",
+      "evidence": {
+        "path": "outputs/audit-math-v101/book26b/result.json",
+        "sha256": "fecce3e60b0f3e230188764949b1eb41a7e0467c920d7d0af0194e5b460ed836"
+      }
+    },
+    "other_book_records": {
+      "status": "HISTORICAL_NOT_RERUN_THIS_RELEASE",
+      "scripts": 15,
+      "path": "math/reference_results.json"
+    }
+  },
+  "toolkit": {
+    "status": "PASS",
+    "mode": "quick",
+    "n": 3200,
+    "holdout_n": 800,
+    "scope": "all split toolkit capabilities; fixed linear-feature model holdout comparison, separate OOF and learning curves; not frozen nonlinear book-model performance",
+    "threshold": 0.15,
+    "seed": 20261011,
+    "split_method": "stratified 75% train / 25% test",
+    "learning_curve_band": "fold SD, not a confidence interval",
+    "input_sha256": "5af2de5ee5fc3e6c62aaa9ce9bf39db63074179e9dc2a315a934361e9c619e55",
+    "artifacts": [
+      "baseline/baseline_summary.csv",
+      "baseline/baseline_table.csv",
+      "baseline/report.json",
+      "baseline/table1.html",
+      "baseline/table1.md",
+      "baseline/table1.tex",
+      "calibration.png",
+      "comparison.json",
+      "confusion.png",
+      "cv.json",
+      "cv_fold_metrics.csv",
+      "dca.png",
+      "frozen_predictions.csv",
+      "frozen_predictions.csv.json",
+      "holdout_predictions.csv",
+      "learning_curve.png",
+      "learning_curve_folds.csv",
+      "learning_curve_summary.csv",
+      "oof_predictions.csv",
+      "pr.png",
+      "roc.png",
+      "split_assignments.csv"
+    ],
+    "evidence": {
+      "path": "outputs/quick/toolkit/report.json",
+      "sha256": "eb8e688474667ad60f1f82ab75875d3825be4ee6388e12428549df894a2f24a7"
+    }
+  },
+  "baseline": {
+    "status": "PASS",
+    "n": 3200,
+    "groups": {
+      "Overall": 3200,
+      "y=0": 2816,
+      "y=1": 384
+    },
+    "artifacts": [
+      "baseline_summary.csv",
+      "baseline_table.csv",
+      "table1.md",
+      "table1.html",
+      "table1.tex"
+    ],
+    "note": "Categorical percentages use observed denominators; missing percentages use total denominators. SD uses n-1; quantiles use linear interpolation (R type 7). NE means not estimable. Descriptive table only; no imputation, significance testing or predictor selection.",
+    "evidence": {
+      "path": "outputs/quick/baseline/report.json",
+      "sha256": "b27bf27c7051c0c1aa1985428d5af8d1cf61a23335a4a0ef810e3c80bdcd21eb"
     }
   },
   "remote_ci": {
-    "run_id": 38072548229,
-    "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38072548229",
-    "ubuntu": "success",
-    "windows": "success",
-    "macos": "success"
+    "status": "pending_public_push",
+    "url": null,
+    "note": "v1 CI is not evidence for v2; update only after current code is pushed and workflow result is observed"
   },
-  "scope": "synthetic educational workflows; human clinical review remains pending"
+  "fresh_public_clone": {
+    "status": "pending_public_push",
+    "note": "to be executed from the public v2 repository after push"
+  },
+  "scope": "Synthetic educational execution and numerical contracts. Chapter execution, prediction consistency and clinical approval are distinct; manual reviews, partial branches and clinical external validity retain their declared limits."
 }

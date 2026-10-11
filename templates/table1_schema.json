@@ -1,0 +1,22 @@
+{
+  "id_column": "id",
+  "group": "y",
+  "group_levels": ["0", "1"],
+  "missing_values": ["", "NA", "NaN"],
+  "variables": [
+    {"name": "age", "label": "年龄 / Age", "unit": "years", "type": "continuous"},
+    {"name": "male", "label": "性别 / Sex", "type": "categorical", "levels": ["0", "1"], "level_labels": {"0": "Female", "1": "Male"}},
+    {"name": "bmi", "label": "体质指数 / BMI", "unit": "kg/m²", "type": "continuous"},
+    {"name": "asa", "label": "ASA 分级 / ASA class", "type": "categorical", "levels": ["1", "2", "3", "4"]},
+    {"name": "emergency", "label": "急诊 / Emergency", "type": "categorical", "levels": ["0", "1"]},
+    {"name": "smoker", "label": "吸烟 / Smoking", "type": "categorical", "levels": ["0", "1"]},
+    {"name": "sbp", "label": "收缩压 / SBP", "unit": "mmHg", "type": "continuous"},
+    {"name": "hr", "label": "心率 / Heart rate", "unit": "beats/min", "type": "continuous"},
+    {"name": "hb", "label": "血红蛋白 / Hemoglobin", "unit": "g/L", "type": "continuous"},
+    {"name": "crea", "label": "肌酐 / Creatinine", "unit": "µmol/L", "type": "continuous", "summary": "median_iqr"},
+    {"name": "alb", "label": "白蛋白 / Albumin", "unit": "g/L", "type": "continuous"},
+    {"name": "diabetes", "label": "糖尿病 / Diabetes", "type": "categorical", "levels": ["0", "1"]},
+    {"name": "copd", "label": "慢阻肺 / COPD", "type": "categorical", "levels": ["0", "1"]},
+    {"name": "chf", "label": "心力衰竭 / Heart failure", "type": "categorical", "levels": ["0", "1"]}
+  ]
+}

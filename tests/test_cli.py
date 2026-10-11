@@ -38,11 +38,9 @@ class CLITests(unittest.TestCase):
                                 capture_output=True)
         self.assertNotEqual(result.returncode, 0)
 
-    def test_missing_r_fails_clearly(self):
-        result = subprocess.run([sys.executable, str(ROOT / "run.py"), "chapter", "8",
-                                 "--rscript", "does-not-exist-Rscript"], capture_output=True)
-        self.assertEqual(result.returncode, 1)
-        self.assertNotIn(b"Traceback", result.stderr)
+    def test_missing_python_dependencies_fail_doctor(self):
+        with mock.patch.object(runner.importlib.util, "find_spec", return_value=None), redirect_stdout(io.StringIO()):
+            self.assertEqual(runner.doctor(SimpleNamespace()), 1)
 
     def test_can_call_from_another_directory(self):
         with test_tempdir() as folder:
@@ -72,6 +70,16 @@ class CLITests(unittest.TestCase):
             self.assertEqual(actual["status"], "FAIL")
             self.assertNotIn("old_run", actual)
 
+    def test_failed_course_entry_replaces_old_execution_status(self):
+        with test_tempdir() as folder:
+            fixture = Path(folder)
+            with mock.patch.object(runner, "ROOT", fixture), mock.patch.object(runner, "execute", side_effect=RuntimeError("source error")):
+                with self.assertRaises(RuntimeError):
+                    runner.run_course_cli("all", SimpleNamespace(mode="quick"))
+            status = json.loads((fixture/"outputs/quick/course_execution.json").read_text(encoding="utf-8"))
+            self.assertEqual(status["status"], "FAIL")
+            self.assertEqual(json.loads((fixture/"outputs/quick/verification.json").read_text(encoding="utf-8"))["status"], "STALE")
+
 
 class PredictionIntegrationTests(unittest.TestCase):
     @classmethod
@@ -86,12 +94,30 @@ class PredictionIntegrationTests(unittest.TestCase):
             shutil.copytree(self.source / part, target / part)
         return target
 
-    def test_r_predictions_independently_reconstructed(self):
+    def test_predictions_independently_reconstructed(self):
         result = runner.verify_output(self.source)
         self.assertEqual(result["n"], 3200)
         self.assertEqual(result["events"], 384)
         self.assertAlmostEqual(result["C"], 0.771238384824811, places=9)
         self.assertLess(result["max_prediction_error"], 1e-10)
+
+    def test_stale_chapter_or_changed_source_cannot_be_verified(self):
+        with test_tempdir() as folder:
+            target = self.copied_outputs(folder)
+            manifest = target/"manifest.csv"
+            manifest.write_text("chapter,status\n8,STALE\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "STALE"):
+                runner.verify_output(target)
+            manifest.write_text("chapter,status\n8,PASS_EXECUTED\n", encoding="utf-8")
+            sources = target/"results/context_sources.csv"
+            expected = ("course_core.py", "course_validation.py", "course.py", "metrics.py", "preprocessing.py", "validation.py", "predictions.py", "baseline.py")
+            rows = [{"file": name, "sha256": "0"*64} for name in expected]
+            with sources.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=["file", "sha256"])
+                writer.writeheader()
+                writer.writerows(rows)
+            with self.assertRaisesRegex(ValueError, "源码已改变"):
+                runner.verify_output(target)
 
     def test_changed_prediction_is_rejected(self):
         with test_tempdir() as folder:

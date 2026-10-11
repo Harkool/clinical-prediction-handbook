@@ -25,6 +25,19 @@ def ipcw_weights(time, cause, horizon, censoring_steps):
     unknown and has weight zero. A censoring observation at exactly horizon
     must be adjudicated before this helper is used; it is rejected here.
     """
+    time, cause = np.asarray(time, float), np.asarray(cause, float)
+    if (time.ndim != 1 or cause.shape != time.shape or not len(time) or
+            not np.all(np.isfinite(time)) or np.any(time < 0) or
+            not np.all(np.isfinite(cause)) or not np.all(np.isin(cause, [0, 1, 2])) or
+            not np.isfinite(horizon) or horizon < 0):
+        raise ValueError("IPCW requires aligned nonempty finite times, causes 0/1/2 and a nonnegative horizon")
+    steps = np.asarray(censoring_steps, float)
+    if steps.size:
+        if (steps.ndim != 2 or steps.shape[1] != 2 or not np.all(np.isfinite(steps)) or
+                np.any(steps[:, 0] < 0) or np.any(np.diff(steps[:, 0]) <= 0) or
+                np.any((steps[:, 1] < 0) | (steps[:, 1] > 1)) or
+                np.any(np.diff(steps[:, 1]) > 0)):
+            raise ValueError("Censoring survival steps must be ordered finite times and nonincreasing probabilities")
     if np.any((time == horizon) & (cause == 0)):
         raise ValueError("Censoring at the horizon requires a documented boundary convention")
     if np.intersect1d(time[cause == 0], time[cause != 0]).size:
@@ -50,6 +63,7 @@ def competing_brier(time, cause, horizon, prediction, censoring_steps):
     A competing event has label zero; it is observed, not censored. Unknown
     outcomes remain NaN and are omitted BEFORE subtraction (0*NaN is NaN).
     """
+    time, cause = np.asarray(time, float), np.asarray(cause, float)
     prediction = np.broadcast_to(np.asarray(prediction, float), time.shape)
     if not np.all(np.isfinite(prediction)) or np.any((prediction < 0) | (prediction > 1)):
         raise ValueError("Predictions must be finite probabilities")

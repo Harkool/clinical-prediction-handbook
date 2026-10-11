@@ -1,84 +1,62 @@
 # 故障排查
 
-先保存失败时的命令、错误消息和运行日志，再根据原因修正。命令中保留 `--mode`，以便区分快速运行与书籍预算。
+先保存命令、模式、Git 提交和错误消息。日志在 outputs/<mode>/logs，章内状态与范围见对应产物目录。
 
-## 找不到 Python 或 Rscript
-
-在终端运行 `python --version`（macOS/Linux 可用 `python3 --version`）和 `Rscript --version`。如果 R 已安装但未加入 PATH，将实际 Rscript 路径传给入口：
+## 解释器或依赖缺失
 
 ```text
-python run.py chapter 08 --mode quick --rscript "本机 Rscript 的完整路径"
-```
-
-Windows 路径含空格时加双引号。不要把上述中文说明原样作为路径，也不要填写 RStudio 的可执行文件。
-
-## 下载 ZIP 后找不到文件
-
-进入同时包含 `run.py`、`R/`、`math/`、`docs/` 的仓库根目录。保留完整目录结构。入口会根据自身位置寻找项目模块，章节也会自动生成其必要依赖；单独复制一个 R 文件不能代替完整项目。
-
-## 数学实验提示 `ModuleNotFoundError`
-
-将依赖安装到用于运行 `run.py` 的同一个 Python：
-
-```text
+python --version
 python -m pip install -r requirements.txt
 python run.py doctor
-python run.py math 21
 ```
 
-如果依赖下载或构建失败，检查 Python 版本、系统架构和依赖文件。锁定数学依赖支持 Python 3.9—3.12，新环境优先使用 3.11 或 3.12；不要因系统安装的是更新 Python，就假定这些锁定包有相应安装轮子。Python 3.13 及以后需另行解决包版本兼容性并重新数值验收。已有 Conda 环境也可运行，但记录实际版本。不要用另一个 Python 的 `pip` 安装后假定当前环境已具备依赖。
+安装和运行必须使用同一个 Python。Windows 可调用 .venv\Scripts\python.exe，macOS/Linux 使用 .venv/bin/python。推荐 3.11/3.12；锁定依赖覆盖 3.9—3.12。toolkit 另需 requirements-toolkit.txt。
 
-## 提示缺少 R 的 `survival`
+## 下载后缺少文件
 
-第 09 章需要 R 的推荐包 `survival`。在选定的 R 中检查：
+仓库应保留 run.py、cph、math、examples、templates 和 docs，尤其是 examples/reference/main_case.csv。单独下载一个脚本不能代替完整项目。
 
-```r
-packageVersion("survival")
+## 基线表找不到输入
+
+默认表格读取当前模式的数据；先执行第 3 章或明确提供冻结输入：
+
+```text
+python run.py chapter 03 --mode quick
+python run.py baseline --mode quick
+python run.py baseline --input examples/reference/main_case.csv
 ```
 
-若系统的精简安装未包含推荐包，按安装渠道补齐，或在该 R 环境中安装。R 基线不要求 `mice`；第 07 章的训练中位数练习不能解释为完整多重填补分析。
+未知分类水平、缺列或重复 ID 需要修正数据与 schema 的对应关系。观察分母和缺失数保留在数值 CSV。
 
-## 中文路径或日志显示乱码
+## 跨目录或中文路径
 
-保存源码及编辑后的 CSV 为 UTF-8。Windows 使用 PowerShell 和当前 Rscript；R 入口会设置适合路径读取的字符环境。必要时将学习仓库移动到一个较短的本机目录并重新创建虚拟环境。
+用 run.py 的绝对路径调用入口。自备 --input、--schema、--output 相对参数仍按当前目录解释，跨目录时写绝对路径；含空格时加引号。源码和 CSV 使用 UTF-8；Excel 通过“从文本/CSV 导入”并明确选择 UTF-8。
 
-先查看文件内容是否损坏，而不是只看终端字体。Excel 自动打开 CSV 时可能使用本地编码；使用“从文本/CSV 导入”，明确选择 UTF-8，并核对列名、数字及缺失值。
+## 运行慢或数字不同
 
-## 运行比预期慢
+先使用 quick。book 双重 bootstrap 含 200 × 50 次内部计算，数学 all 也含重复模拟。修改预算时记录配置和实际次数，不能只改报告文字。
 
-先用 `python run.py course --mode quick`。书籍模式包含 200 外层 × 50 内层双重 bootstrap，耗时随硬件和环境变化。数学 `all` 还包含重复模拟；可先运行 `math 21` 或 `math 24b`，再按章安排其余实验。
+冻结 3200 例上的固定设计、系数和预测应在明确容差内复现；新模拟和重抽样使用独立 Python 随机流，可能与历史参考不同。核对输入、版本、预算、种子和估计目标，勿混用 reference 与 outputs 的表格。
 
-不要为让命令更快而只修改报告中的重复次数。若改变计算预算，应修改明确的配置，保存修改和实际执行次数，将结果标为自己的方法实验。
+## verify、状态或身份失败
 
-## 快速结果和书中数字不同
-
-核对 `quick`/`book`、软件版本、种子、输入哈希和实际重复次数。快速模式的重抽样次数较少，重抽样结果会不同。`examples/reference/` 是书中主线的参考产物，课程在 `outputs/` 生成自己的结果；不能把两次运行的表拼成一个报告。
-
-固定模型系数、3200 人逐人预测、统计量与重抽样结果要分别核对。相同种子并不能保证不同 R、数值库或实现得到逐字相同文件；先解释差异，再判断是否在适当容差内。
-
-## `verify` 失败
-
-先确认所选模式的课程已完成：
+保留失败项，修正原因后重跑受影响章节。需要全部课程时运行：
 
 ```text
 python run.py course --mode quick
 python run.py verify --mode quick
 ```
 
-阅读失败项指向的文件或字段。常见原因是缺少必要产物、文件来自不同运行、单位或结构改变、预测与系数不一致。保留失败证据，修正输入或实现后重跑；手工改 CSV 中的 PASS 字样不会修复分析。
+STALE 表示已过期，RUNNING 表示未完成，FAIL 表示失败，均不能当作完成。单章产物有效与课程全覆盖分别核对。Python 模型用 SHA-256 绑定规则；修改结点、目标或实现后重新拟合并生成模型 JSON，不拷贝旧身份或手改 PASS。
 
-## 负向检查出现 PASS
+## 不收敛、分离、奇异或某折只有一类
 
-第 05、06、16、17 章会故意构造未知标签、晚回报、缺列、错误单位或模型篡改。此时 PASS 指“错误被预期的检查拒绝”；查看具体用例与拒绝原因。如果错误没有被拒绝，章节应失败，需要修复检查或实现。
+检查事件数、水平、设计秩和折分配。重复患者记录应声明 groups，确保同一患者全部在一侧；每个训练与评价折需要两类结局。拟合边界和 ConvergenceWarning 使相应运行失败，不删除失败重复后只平均成功值。
 
-## 模型拟合不收敛、奇异或发生分离
+## 反例 PASS 与人工 PENDING
 
-本项目的拟合检查会停止或将相应结果标为无效，不会静默删除失败重复。回到数据规模、事件数、因子水平、设计秩和模型结构检查。新增变量、减少样本或改变生成机制都可能改变可估性。若调整算法，保存修改原因，并重新验证整个开发流程。
+反例 PASS 表示指定的错误被实际拒绝，读取具体原因。人工待审状态由真实负责人核对后填写；自动运行不代签。partial/manual 的范围以章节说明为准。
 
-## 人工审核一直是 PENDING
+## 报告问题
 
-这是需要人完成的工作。阅读第 01、18—20 章的方案、局限、清单与留痕模板，填写真实决定、证据位置、核对人和日期。自动运行器不把“文件存在”视为已批准，也不自动生成负责人签名。
-
-## 如何提交可复现的问题
-
-在 GitHub issue 写明章节、Git 提交、系统、Python/R 版本、运行命令、最短错误消息和预期行为。附一个合成数据上的最小复现；对文件名、行数和检查状态的描述比完整截屏更便于定位。不得附患者记录、访问凭据或含个人信息的日志。
+在 [GitHub issues](https://github.com/Harkool/clinical-prediction-handbook/issues) 提供章节、系统、Python/包版本、Git 提交、命令、最短错误及预期行为，附合成数据最小复现。仅提供定位所需日志，排除患者资料、凭据和个人信息。
