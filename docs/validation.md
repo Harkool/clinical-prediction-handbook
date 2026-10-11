@@ -45,7 +45,9 @@ python run.py baseline --mode quick
 
 完整主线可改用 `python run.py course --mode book`，随后执行 `python run.py verify --mode book`。每次运行使用自己的 `outputs/quick/` 或 `outputs/book/`；输出没有纳入仓库。参考文件及摘要见 [examples/reference](../examples/reference/README.md)，参考门禁不能复制为自己的审核记录。
 
-v2 的公开推送、全新 clone 复验和远端 CI 尚待本轮发布后核实，结构化记录暂为 `pending_public_push`。历史版本的 CI 成功不能作为 v2 的验证结论。
+修复实现 `c3cff3e` 已从公开仓库重新获取并复验：完整 20 章、独立预测核查、工具箱及 106 项测试通过。首次公开 clone 另执行基线表、线代与 16 个数学实验；相关未改源码的证据保留。本地克隆复验使用现有 Miniconda 环境。
+
+[修复后的远端 CI](https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110756385)在 Windows、macOS、Linux 三个系统全部通过，使用 Python 3.11 并从依赖声明安装，检查主线、基线表、线代、工具箱、106 项测试及数学快速实验。验证记录绑定实际实现提交；后续发布说明的提交保留该测试依据。
 
 所有数据都是合成教学数据。B 分支的独立原因别 Cox 练习、缺失数据示例、表格基础模型入口及人工审阅的范围与待办仍以各章说明为准；运行成功不能代替临床有效性、真实外部验证或人工签字。
 

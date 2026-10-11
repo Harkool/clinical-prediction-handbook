@@ -1,7 +1,7 @@
 {
   "format": "python-release-validation-v2",
   "date": "2026-10-11",
-  "implementation_commit": null,
+  "implementation_commit": "c3cff3ef91346353e807765a0014a669edb0421f",
   "implementation": "pure Python",
   "platform": "Windows",
   "environment": {
@@ -562,13 +562,109 @@
     }
   },
   "remote_ci": {
-    "status": "pending_public_push",
-    "url": null,
-    "note": "v1 CI is not evidence for v2; update only after current code is pushed and workflow result is observed"
+    "status": "PASS",
+    "commit": "c3cff3ef91346353e807765a0014a669edb0421f",
+    "run_id": 38110756385,
+    "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110756385",
+    "python": "3.11",
+    "jobs": [
+      {
+        "id": 114385637044,
+        "name": "practice (ubuntu-latest)",
+        "conclusion": "success",
+        "started_at": "2026-10-11T04:10:54Z",
+        "completed_at": "2026-10-11T04:12:39Z",
+        "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110756385/job/114385637044"
+      },
+      {
+        "id": 114385637110,
+        "name": "practice (macos-latest)",
+        "conclusion": "success",
+        "started_at": "2026-10-11T04:10:59Z",
+        "completed_at": "2026-10-11T04:12:41Z",
+        "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110756385/job/114385637110"
+      },
+      {
+        "id": 114385637133,
+        "name": "practice (windows-latest)",
+        "conclusion": "success",
+        "started_at": "2026-10-11T04:10:53Z",
+        "completed_at": "2026-10-11T04:13:55Z",
+        "url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110756385/job/114385637133"
+      }
+    ]
   },
   "fresh_public_clone": {
-    "status": "pending_public_push",
-    "note": "to be executed from the public v2 repository after push"
+    "status": "PASS",
+    "commit": "c3cff3ef91346353e807765a0014a669edb0421f",
+    "platform": "Windows",
+    "environment": {
+      "Python": "3.9.20",
+      "matplotlib": "3.9.4",
+      "numpy": "2.0.2",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.13.1"
+    },
+    "environment_note": "Existing Miniconda environment; dependencies not reinstalled in a new virtual environment.",
+    "unit_tests": {
+      "status": "PASS",
+      "tests": 106,
+      "seconds": 11.428
+    },
+    "commands": [
+      {
+        "name": "doctor",
+        "exit_code": 0,
+        "seconds": 0.094,
+        "log": "outputs/release-validation/fresh-clone-fixed-doctor.log",
+        "log_sha256": "2a6244b2b931fbfce842fbcae5490105fa29695a412545cf4454e9f85fcba642"
+      },
+      {
+        "name": "course_quick",
+        "exit_code": 0,
+        "seconds": 8.203,
+        "log": "outputs/release-validation/fresh-clone-fixed-course_quick.log",
+        "log_sha256": "4d4de76f7107e6489c707f1edc3df093774adb39c9c0977dab48ef923c63a68b"
+      },
+      {
+        "name": "verify_quick",
+        "exit_code": 0,
+        "seconds": 0.156,
+        "log": "outputs/release-validation/fresh-clone-fixed-verify_quick.log",
+        "log_sha256": "f42dae7ad5f4a9bfeb7a3d3fed42f83e904c4a8ca27fe9fe8cf30c9586aa1819"
+      },
+      {
+        "name": "toolkit",
+        "exit_code": 0,
+        "seconds": 3.672,
+        "log": "outputs/release-validation/fresh-clone-fixed-toolkit.log",
+        "log_sha256": "162b8a22677ff3752a6c97ade22c06dfc80353fa79b7e96cd9aeb1f7a0350c94"
+      },
+      {
+        "name": "unittest",
+        "exit_code": 0,
+        "seconds": 12.688,
+        "log": "outputs/release-validation/fresh-clone-fixed-unittest.log",
+        "log_sha256": "45152d7bff0b5945600dde4c2dd9ae58d676d11b3170228c41fea1325eb424d1"
+      }
+    ],
+    "chapter_entries": 31,
+    "complete_case_chapters": 20,
+    "mathematical_labs": {
+      "scripts": 16,
+      "checks": 48,
+      "executed_commit": "eb06693a5e2aa8bcb2a8cb15d332b14d7870fcc2",
+      "source_unchanged_at_current_commit": true
+    },
+    "additional_initial_checks": [
+      "baseline",
+      "foundations"
+    ],
+    "note": "First public clone ran all eight commands. After the calibration-only fix, five affected checks were rerun; unchanged math and baseline/foundations evidence retained with source verification. Remote OS CI independently runs these tasks from the corrected implementation.",
+    "local_evidence": {
+      "path": "outputs/release-validation/fresh-clone.json",
+      "sha256": "6d32da0f9d5639a4d281515b14b28fd71d37d817359c47774d501eeaf8c18769"
+    }
   },
   "scope": "Synthetic educational execution and numerical contracts. Chapter execution, prediction consistency and clinical approval are distinct; manual reviews, partial branches and clinical external validity retain their declared limits.",
   "foundations": {
