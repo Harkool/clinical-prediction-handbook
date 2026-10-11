@@ -166,7 +166,11 @@ def _performance(rows, p):
     cal = calibration_summary(evaluation)
     intercept, joint = cal["calibration_in_the_large"], cal["joint_intercept_and_slope"]
     if intercept["status"] != "PASS" or joint["status"] != "PASS" or cal["O_over_E"] is None:
-        raise ValueError("Performance/calibration is not estimable; chapter must not pass")
+        reasons = [part.get("reason", "unknown calibration failure") for part in (intercept, joint)
+                   if part["status"] != "PASS"]
+        if cal["O_over_E"] is None:
+            reasons.append("O/E has no positive expected-event denominator")
+        raise ValueError("Performance/calibration is not estimable; chapter must not pass: " + "; ".join(reasons))
     return dict(C=roc_data(evaluation)["auc"], Brier=cal["Brier"], slope=joint["slope"],
                 CITL=intercept["intercept"], OE=cal["O_over_E"])
 

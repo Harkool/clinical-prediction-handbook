@@ -295,7 +295,16 @@ def _logistic_calibration(evaluation, slope=False):
         except np.linalg.LinAlgError:
             break
         rate = 1.
-        while rate > 2**-20 and objective(beta-rate*step) > objective(beta):
+        old = objective(beta)
+        # Near the solution, the Newton decrease can be smaller than one ULP
+        # of the summed loss. Accommodate only floating-point objective noise;
+        # retain the independent final score and finite-information checks.
+        rounding_allowance = 16*np.finfo(float).eps*max(1., abs(old))
+        directional_decrease = float(gradient@step)
+        while rate > 2**-20:
+            value = objective(beta-rate*step)
+            if np.isfinite(value) and value <= old-1e-4*rate*directional_decrease+rounding_allowance:
+                break
             rate /= 2
         if rate <= 2**-20:
             break

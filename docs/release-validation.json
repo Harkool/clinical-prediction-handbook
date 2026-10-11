@@ -13,11 +13,11 @@
   },
   "unit_tests": {
     "status": "PASS",
-    "tests": 103,
-    "seconds": 12.98,
+    "tests": 106,
+    "seconds": 13.2,
     "evidence": {
-      "path": "outputs/release-validation/unittest.log",
-      "sha256": "55620220818afd30511e0d38c94b26af1d9e63782047a629dca70e6d6b3b6ba7"
+      "path": "outputs/release-validation/unittest-v2-final.log",
+      "sha256": "f694fbcd250b8b1252a2f25fc249a5832ac4ca3c0a5acc18dbd7aeae4a4f8be5"
     }
   },
   "course": {
@@ -45,15 +45,15 @@
         19,
         20
       ],
-      "source_signature": "3d2314480dc112cdfd62264578150fef145e9c71fc7d41c3067bb2a76d3ed2f5",
+      "source_signature": "01dfdf9240174b9022eba55c480cfccb5eca98d293b8133913496133d58beb3b",
       "source_hashes": {
         "cph/__init__.py": "a461a4663e344afe3f3356038ad83f0b6f5f48dbb3808ab8ee7a981f53764229",
         "cph/baseline.py": "73e9bfe178c09052659276ffb1951b0074756b08cdafb65ef4ba052e482c7cb4",
-        "cph/course.py": "b28512857c57cad51dcf8a11cfe1dbd86022a58f770ba8e62abdcfaaf598eebb",
+        "cph/course.py": "30913ae254512a4b7fa7877688e78f3a74848164dc50ff013d5c3fb067f56cfa",
         "cph/course_core.py": "6982443b821c620fba23ba8ec5eacae5bd98cba13adee1523348ae262e6620ac",
         "cph/course_validation.py": "a8aeaa4a69c8396cdf9a95e7374ee90c0173779e91ed2fa4a8cec5bc07da8d2d",
         "cph/foundations.py": "95da2590371d666f85f227035e87a0b8e94d1e9b3ac61c418ea2884ebef76bef",
-        "cph/metrics.py": "f65e6aea1c5f361ae613ef8d18c30e4f333c97079a99b84393f04fc9f029e04b",
+        "cph/metrics.py": "75f88f65057a9bd7b5acc694a87d9d9d4865e6adc0dcd3790ffc7b09f41a9680",
         "cph/plots.py": "d6942396796ca49a540fe4d0da0d71ba85dbd7088d8a476f0120f77870c60313",
         "cph/predictions.py": "02a01edba0b2078e1a73f29357160e4106243825804178ac4f9264b6a4b670a3",
         "cph/preprocessing.py": "b173cf5c3396edc0a8230e8af144e1522122eac93c19697e8071f7923fdd45e4",
@@ -117,11 +117,11 @@
       "evidence": [
         {
           "path": "outputs/quick/manifest.csv",
-          "sha256": "4b5b94da922592da5e5c7c38668116ae652cd1293ad034f069523587e9d309dd"
+          "sha256": "624b172c1468b4cc634a762eb57f6835808937bdc01466bb1e508c30c63304e8"
         },
         {
           "path": "outputs/quick/source_signature.json",
-          "sha256": "5e7410c4f14b8cbf925baab113eec1aea1f116b19ff8b62eeaa4f64d092f10a9"
+          "sha256": "06df7c2035f152a876cc581bedadabfefddf9ce467f900c7074b3be5ba880681"
         },
         {
           "path": "outputs/quick/verification.json",
@@ -165,15 +165,15 @@
         19,
         20
       ],
-      "source_signature": "d8826316a197a00941e3b59b3bee404b42ddb0336bc0cb48bc1b888a338319d9",
+      "source_signature": "1aeeb1700631bcfa83a23e5fd338cbb5f504e93514d905b2ab5a13bc99b38994",
       "source_hashes": {
         "cph/__init__.py": "a461a4663e344afe3f3356038ad83f0b6f5f48dbb3808ab8ee7a981f53764229",
         "cph/baseline.py": "73e9bfe178c09052659276ffb1951b0074756b08cdafb65ef4ba052e482c7cb4",
-        "cph/course.py": "b28512857c57cad51dcf8a11cfe1dbd86022a58f770ba8e62abdcfaaf598eebb",
+        "cph/course.py": "30913ae254512a4b7fa7877688e78f3a74848164dc50ff013d5c3fb067f56cfa",
         "cph/course_core.py": "6982443b821c620fba23ba8ec5eacae5bd98cba13adee1523348ae262e6620ac",
         "cph/course_validation.py": "a8aeaa4a69c8396cdf9a95e7374ee90c0173779e91ed2fa4a8cec5bc07da8d2d",
         "cph/foundations.py": "95da2590371d666f85f227035e87a0b8e94d1e9b3ac61c418ea2884ebef76bef",
-        "cph/metrics.py": "f65e6aea1c5f361ae613ef8d18c30e4f333c97079a99b84393f04fc9f029e04b",
+        "cph/metrics.py": "75f88f65057a9bd7b5acc694a87d9d9d4865e6adc0dcd3790ffc7b09f41a9680",
         "cph/plots.py": "d6942396796ca49a540fe4d0da0d71ba85dbd7088d8a476f0120f77870c60313",
         "cph/predictions.py": "02a01edba0b2078e1a73f29357160e4106243825804178ac4f9264b6a4b670a3",
         "cph/preprocessing.py": "b173cf5c3396edc0a8230e8af144e1522122eac93c19697e8071f7923fdd45e4",
@@ -237,11 +237,11 @@
       "evidence": [
         {
           "path": "outputs/book/manifest.csv",
-          "sha256": "9470aa5e36d18d04c63f7a3eb69866144763ba2fc999e0f98ecfd6af57d3408a"
+          "sha256": "cb46eb15fd327881c7acf194315a34e9baffc0c5fa2558811fb63ffee3e90211"
         },
         {
           "path": "outputs/book/source_signature.json",
-          "sha256": "9ca2816490c756cb7a7d4ff68e654ae7164d6cf778a4e317b7be71364f8f53b0"
+          "sha256": "641a1156443d510e7d17cbdf8d919e35357f519b262397ddf429a7f741240ead"
         },
         {
           "path": "outputs/book/verification.json",
@@ -570,5 +570,77 @@
     "status": "pending_public_push",
     "note": "to be executed from the public v2 repository after push"
   },
-  "scope": "Synthetic educational execution and numerical contracts. Chapter execution, prediction consistency and clinical approval are distinct; manual reviews, partial branches and clinical external validity retain their declared limits."
+  "scope": "Synthetic educational execution and numerical contracts. Chapter execution, prediction consistency and clinical approval are distinct; manual reviews, partial branches and clinical external validity retain their declared limits.",
+  "foundations": {
+    "status": "PASS",
+    "scope": "linear algebra primer, independent of clinical case",
+    "checks": {
+      "linear_predictor_by_hand": true,
+      "dependent_matrix_rank_two": true,
+      "OLS_residual_orthogonal": true,
+      "information_quadratic_identity": true,
+      "positive_information_eigenvalues": true,
+      "unpenalized_intercept_ridge_shrinks_slope": true
+    },
+    "examples": [
+      {
+        "example": "linear predictor",
+        "value": -0.10000000000000003,
+        "interpretation": "dot product is one scalar"
+      },
+      {
+        "example": "Logistic risk",
+        "value": 0.47502081252106,
+        "interpretation": "sigmoid of the scalar, not matrix inversion"
+      },
+      {
+        "example": "dependent matrix rank",
+        "value": 2,
+        "interpretation": "third column equals twice the second"
+      },
+      {
+        "example": "OLS intercept",
+        "value": 0.9000000000000001,
+        "interpretation": "full column rank least-squares fit"
+      },
+      {
+        "example": "OLS slope",
+        "value": 0.9000000000000001,
+        "interpretation": "residual orthogonal to both design columns"
+      },
+      {
+        "example": "ridge slope",
+        "value": 0.7499999999999998,
+        "interpretation": "lambda=1; intercept not penalized"
+      }
+    ],
+    "dimensions": {
+      "X": [
+        4,
+        2
+      ],
+      "beta": [
+        2
+      ],
+      "X_transpose_W_X": [
+        2,
+        2
+      ]
+    },
+    "gram_eigenvalues": [
+      1.189750324093346,
+      16.810249675906654
+    ]
+  },
+  "floating_point_calibration_fix": {
+    "trigger": "macOS ARM first CI run failed in chapter 14 during near-optimum calibration line search",
+    "change": "Armijo decrease with 16 epsilon times summed-loss scale, retaining final normalized score < 1e-11 and finite information checks",
+    "regressions": [
+      "4 ULP loss noise with closed-form finite offset MLE",
+      "800-patient order invariance with a closed-form two-logit calibration",
+      "nonfinite objective rejection"
+    ],
+    "failed_run_url": "https://github.com/Harkool/clinical-prediction-handbook/actions/runs/38110355099",
+    "note": "mechanism reproduced with rounding perturbation; actual ARM behavior checked by subsequent remote CI"
+  }
 }

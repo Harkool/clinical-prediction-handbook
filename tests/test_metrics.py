@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 try:
     import numpy as np
@@ -176,6 +177,65 @@ class ProbabilityMetricTests(unittest.TestCase):
         result = calibration_summary(evaluation)["joint_intercept_and_slope"]
         self.assertEqual(result["status"], "NOT_ESTIMABLE")
         self.assertIsNone(result["slope"])
+
+    def test_calibration_tolerates_ulp_loss_noise_but_still_solves_the_score(self):
+        from cph import metrics
+        evaluation = self.evaluation([1]*4+[0]*16, [.25]*20)
+        original_sum = np.sum
+        perturbations = 0
+
+        def rounded_objective_sum(values, *args, **kwargs):
+            nonlocal perturbations
+            total = original_sum(values, *args, **kwargs)
+            losses = np.asarray(values)
+            # At the finite MLE q=.2, the first event loss is -log(.2).
+            # A few ULPs of summed-loss noise can conceal the last Newton
+            # decrease. The discontinuity models platform reduction rounding;
+            # it does not change outcomes, probabilities, score or information.
+            if losses.shape == (20,) and abs(float(losses[0])-math.log(5)) < 1e-9:
+                perturbations += 1
+                for _ in range(4):
+                    total = np.nextafter(total, np.inf)
+            return total
+
+        # Only the private regression is called under this patch: its np.sum
+        # calls are objective reductions, not grouped counts or score checks.
+        with patch.object(metrics.np, "sum", side_effect=rounded_objective_sum):
+            result = metrics._logistic_calibration(evaluation, slope=False)
+        self.assertGreater(perturbations, 0)
+        self.assertEqual(result["status"], "PASS")
+        expected = math.log(.2/.8)-math.log(.25/.75)
+        self.assertAlmostEqual(result["intercept"], expected, places=10)
+        eta = math.log(.25/.75)+result["intercept"]
+        fitted_probability = 1/(1+math.exp(-eta))
+        self.assertLess(abs(fitted_probability-.2), 1e-11)
+
+    def test_finite_joint_calibration_matches_closed_form_after_row_reordering(self):
+        # Two logit values with event fractions .2 and .8 give intercept 0,
+        # slope log(4). Unlike a separation fixture, both labels occur at each
+        # predictor value. Repeat to match the 800-patient held-out lesson size.
+        y = np.tile([0]*8+[1]*2+[0]*2+[1]*8, 40)
+        lp = np.tile([-1.]*10+[1.]*10, 40)
+        p = 1/(1+np.exp(-lp))
+        orders = (np.arange(800), np.arange(799, -1, -1),
+                  np.random.default_rng(20261021).permutation(800))
+        for order in orders:
+            with self.subTest(first_row=int(order[0])):
+                result = calibration_summary(self.evaluation(y[order], p[order]))["joint_intercept_and_slope"]
+                self.assertEqual(result["status"], "PASS")
+                self.assertAlmostEqual(result["intercept"], 0., places=10)
+                self.assertAlmostEqual(result["slope"], math.log(4), places=10)
+                q = 1/(1+np.exp(-(result["intercept"]+result["slope"]*lp[order])))
+                score = np.column_stack([np.ones(800), lp[order]]).T@(q-y[order])
+                self.assertLess(float(np.max(np.abs(score)))/800, 1e-11)
+
+    def test_nonfinite_calibration_objective_cannot_be_accepted_as_converged(self):
+        from cph import metrics
+        evaluation = self.evaluation([1]*4+[0]*16, [.25]*20)
+        with patch.object(metrics.np, "sum", return_value=float("nan")):
+            result = metrics._logistic_calibration(evaluation, slope=False)
+        self.assertEqual(result["status"], "NOT_ESTIMABLE")
+        self.assertIsNone(result["intercept"])
 
     def test_model_comparison_has_same_evaluation_population_and_json_safe_results(self):
         first = self.evaluation([0, 1, 0, 1], [.1, .8, .2, .6])
